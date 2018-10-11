@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Survey</title>
+
+	<!-- Bootstrapping UI5 -->
+	<script id="sap-ui-bootstrap" src="resources/sap-ui-core.js" data-sap-ui-libs="sap.m, sap.f" data-sap-ui-theme="sap_belize" data-sap-ui-compatversion="edge" data-sap-ui-preload="async" data-sap-ui-resourceroots="{&quot;pnp.survey&quot;: &quot;.&quot;}" data-sap-ui-frameoptions="trusted">
+	</script>
+
+	<script>
+		sap.ui.getCore().attachInit(function () {
+			sap.ui.require([
+				"sap/m/Shell",
+				"sap/ui/core/ComponentContainer"
+			], function (Shell, ComponentContainer) {
+				// initialize the UI component
+				new Shell({
+					app: new ComponentContainer({
+						height: "100%",
+						name: "pnp.survey",
+						settings: {
+							id: "survey"
+						}
+					}),
+					appWidthLimited : false
+				}).placeAt("content");
+			});
+		});
+	</script>
+
+<style>.facadebtn{display:inline-block;width:60px;height:60px;background-color:#009de0;border-radius:50px;text-align:center;box-shadow: 2px 2px 3px #999;opacity:.3;}
+.facadebtn .sapUiIcon{color:#FFF;font-size:1.5rem;cursor:pointer;line-height:60px;width:60px;}
+.facadebtn:hover{opacity:1;}
+#interactive.viewport video{width:320px;height:240px;}
+.facade .sapMSLITitleOnly, .facade .sapMILILabel {font-size: 1rem;}
+#interactive.viewport .drawingBuffer{width:320px;height:240px;position:absolute;}
+</style>
+<script type="text/javascript">
+
+window._facadeSettings = {"cordova-plugin-device-orientation":false,"accelerometer":{},"compass":{}};
+	window.sIdeOrigin = "https://webidecp-a7be905be.dispatcher.hana.ondemand.com";
+	window.sap_webide_FacadePreview = true;
+	window.sFacadePath = "https://webidecp-a7be905be.dispatcher.hana.ondemand.com/hatdi_acf0c8a6f/hybrid/cordovafacade/cordova.js";
+	window.sFacadeCfgViewPath = "https://webidecp-a7be905be.dispatcher.hana.ondemand.com/hatdi_acf0c8a6f/hybrid/view/";
+	window.bridgeHtml = "https://webidecp-a7be905be.dispatcher.hana.ondemand.com/hatdi_acf0c8a6f/hybrid/cordovafacade/MessageBridge.html";
+	window.msgDefPath = "https://webidecp-a7be905be.dispatcher.hana.ondemand.com/hatdi_acf0c8a6f/hybrid/mobileextend/MessageDef.js";
+	window.msgBridgePath = "https://webidecp-a7be905be.dispatcher.hana.ondemand.com/hatdi_acf0c8a6f/hybrid/mobileextend/MessageBridge.js";
+	window.meCssPath = "https://webidecp-a7be905be.dispatcher.hana.ondemand.com/hatdi_acf0c8a6f/hybrid/css/mobileExtend.css";
+</script>
+<script src="https://webidecp-a7be905be.dispatcher.hana.ondemand.com/hatdi_acf0c8a6f/hybrid/cordovafacade/floatingButton.js" type="text/javascript"></script>
+</head>
+
+<!-- UI Content -->
+<body class="sapUiBody" id="content">
+</body>
+</html>

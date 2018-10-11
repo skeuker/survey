@@ -1,86 +1,59 @@
-<mvc:View
-	controllerName="pnp.survey.controller.Detail"
-	xmlns="sap.m"
-	xmlns:mvc="sap.ui.core.mvc"
-	xmlns:semantic="sap.f.semantic">
-
-	<semantic:SemanticPage
-		id="detailPage"
-		busy="{detailView>/busy}"
-		busyIndicatorDelay="{detailView>/delay}">
+<mvc:View xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.f.semantic" xmlns:layout="sap.ui.layout" xmlns:core="sap.ui.core"
+	controllerName="pnp.survey.controller.Detail">
+	<semantic:SemanticPage id="detailPage" busy="{detailView>/busy}" busyIndicatorDelay="{detailView>/delay}" showFooter="true">
 		<semantic:titleHeading>
 			<Title text="{TopicID}"/>
 		</semantic:titleHeading>
 		<semantic:headerContent>
 			<ObjectAttribute title="{i18n>priceTitle}"/>
-
 		</semantic:headerContent>
 		<semantic:content>
-			<Table
-				id="lineItemsList"
-				width="auto"
-				items="{toQuestions}"
-				updateFinished="onListUpdateFinished"
-				noDataText="{i18n>detailLineItemTableNoDataText}"
-				busyIndicatorDelay="{detailView>/lineItemTableDelay}">
-				<headerToolbar>
-					<Toolbar>
-						<Title
-							id="lineItemsTitle"
-							text="{detailView>/lineItemListTitle}"
-							titleStyle="H3"/>
-					</Toolbar>
-				</headerToolbar>
-				<columns>
-					<Column>
-						<Text text="{i18n>detailLineItemTableIDColumn}"/>
-					</Column>
-					<Column
-						minScreenWidth="Tablet"
-						demandPopin="true"
-						hAlign="End">
-						<Text text="{i18n>detailLineItemTableUnitNumberColumn}"/>
-					</Column>
-				</columns>
-				<items>
-					<ColumnListItem>
-						<cells>
-							<ObjectIdentifier
-								title="{QuestionText}"
-								text="{QuestionID}"/>
-							<ObjectNumber
-/>
-						</cells>
-					</ColumnListItem>
-				</items>
-			</Table>
+			<layout:Grid content="{toQuestions}" width="100%" vSpacing="2" containerQuery="true" defaultSpan="L12 M12 S12">
+				<Panel expandable="true" expanded="true" width="auto" class="sapUiResponsiveMargin">
+					<headerToolbar>
+						<Toolbar height="3rem" style="Clear">
+							<Title text="{QuestionText}"/>
+							<ToolbarSpacer/>
+							<Button icon="sap-icon://legend"/>
+						</Toolbar>
+					</headerToolbar>
+					<content>
+						<FlexBox alignItems="Start" justifyContent="SpaceAround" width="100%" direction="Column" fitContainer="true" height="100%"
+							alignContent="SpaceAround" renderType="Bare">
+							<items>
+								<Text text="{QuestionText}" class="sapUiMediumMarginEnd">
+									<layoutData>
+										<FlexItemData minHeight="30px"/>
+									</layoutData>
+								</Text>
+								<Slider value="5" min="0" max="10" enableTickmarks="true" class="sapUiMediumMarginEnd" width="50%">
+									<layoutData>
+										<FlexItemData minHeight="60px"/>
+									</layoutData>
+								</Slider>
+							</items>
+						</FlexBox>
+					</content>
+				</Panel>
+			</layout:Grid>
 		</semantic:content>
 		<!--Semantic ShareMenu Buttons-->
 		<semantic:sendEmailAction>
-			<semantic:SendEmailAction
-				id="shareEmail"
-				press="onSendEmailPress"/>
+			<semantic:SendEmailAction id="shareEmail" press="onSendEmailPress"/>
 		</semantic:sendEmailAction>
-
 		<semantic:closeAction>
-			<semantic:CloseAction
-					id="closeColumn"
-					press="onCloseDetailPress"/>
+			<semantic:CloseAction id="closeColumn" press="onCloseDetailPress"/>
 		</semantic:closeAction>
-
 		<semantic:fullScreenAction>
-			<semantic:FullScreenAction
-					id="enterFullScreen"
-					visible="{= !${device>/system/phone} &amp;&amp; !${appView>/actionButtonsInfo/midColumn/fullScreen}}"
-					press="toggleFullScreen"/>
+			<semantic:FullScreenAction id="enterFullScreen"
+				visible="{= !${device>/system/phone} &amp;&amp; !${appView>/actionButtonsInfo/midColumn/fullScreen}}" press="toggleFullScreen"/>
 		</semantic:fullScreenAction>
 		<semantic:exitFullScreenAction>
-			<semantic:ExitFullScreenAction
-					id="exitFullScreen"
-					visible="{= !${device>/system/phone} &amp;&amp; ${appView>/actionButtonsInfo/midColumn/fullScreen}}"
-					press="toggleFullScreen"/>
+			<semantic:ExitFullScreenAction id="exitFullScreen"
+				visible="{= !${device>/system/phone} &amp;&amp; ${appView>/actionButtonsInfo/midColumn/fullScreen}}" press="toggleFullScreen"/>
 		</semantic:exitFullScreenAction>
-
+		<semantic:footerMainAction>
+			<semantic:FooterMainAction text="Submit" id="action2"/>
+		</semantic:footerMainAction>
 	</semantic:SemanticPage>
-
 </mvc:View>
