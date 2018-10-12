@@ -1,0 +1,33 @@
+[{
+	"SurveyID": "1",
+	"AnswerTemplateID": "1",
+	"AnswerOptionRangeFrom": 0,
+	"AnswerOptionRangeTo": 5,
+	"AnswerOptionID": "1",
+	"AnswerOptionValue": "1",
+	"AnswerOptionHint": "Not so great"
+}, {
+	"SurveyID": "1",
+	"AnswerTemplateID": "1",
+	"AnswerOptionID": "2",
+	"AnswerOptionValue": "2",
+	"AnswerOptionHint": "A little better"
+}, {
+	"SurveyID": "1",
+	"AnswerTemplateID": "1",
+	"AnswerOptionID": "3",
+	"AnswerOptionValue": "3",
+	"AnswerOptionHint": "Quite good"
+}, {
+	"SurveyID": "1",
+	"AnswerTemplateID": "1",
+	"AnswerOptionID": "4",
+	"AnswerOptionValue": "4",
+	"AnswerOptionHint": "Good"
+}, {
+	"SurveyID": "1",
+	"AnswerTemplateID": "1",
+	"AnswerOptionID": "5",
+	"AnswerOptionValue": "5",
+	"AnswerOptionHint": "Excellent"
+}]

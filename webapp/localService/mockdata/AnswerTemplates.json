@@ -1,0 +1,15 @@
+[{
+	"AnswerTemplateID": "1",
+	"AnswerTypeID": "Range",
+	"SurveyID": "1",
+	"AnswerRangeFrom": 0,
+	"AnswerRangeTo": 5,
+	"AnswerRangeIncrement": 1
+}, {
+	"AnswerTemplateID": "2",
+	"AnswerTypeID": "Range",
+	"SurveyID": "1",
+	"AnswerRangeFrom": 0,
+	"AnswerRangeTo": 6,
+	"AnswerRangeIncrement": 1
+}]

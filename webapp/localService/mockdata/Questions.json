@@ -3,17 +3,20 @@
 	"QuestionID": "1",
 	"QuestionText": "How was the specification?",
 	"Language": "en",
-	"AnswerTemplateID": "1"
+	"AnswerTemplateID": "1",
+	"Explanation": "Evaluate how well you were able to work with the input provided. "
 }, {
 	"SurveyID": "1",
 	"QuestionID": "2",
 	"QuestionText": "Were timelines kept as promised?",
 	"Language": "en",
-	"AnswerTemplateID": "2"
+	"AnswerTemplateID": "2",
+	"Explanation": "Evaluate whether timelines were meaningful and not compromising quality of implementation."
 }, {
 	"SurveyID": "1",
 	"QuestionID": "3",
-	"QuestionText": "How would you rate your own work?",
+	"QuestionText": "How did you experience interaction with your counterpart?",
 	"Language": "en",
-	"AnswerTemplateID": "3"
+	"AnswerTemplateID": "3",
+	"Explanation": "Evaluate whether your counterpart has shown interest in your recommendations. Doing so at times leads to an overall better solution."
 }]

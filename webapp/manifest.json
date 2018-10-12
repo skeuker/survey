@@ -69,9 +69,15 @@
 					"bundleName": "pnp.survey.i18n.i18n"
 				}
 			},
-			"": {
+			"SurveyModel": {
 				"dataSource": "mainService",
-				"preload": true
+				"preload": true,
+				"json": "true",
+				"loadMetadataAsync": false,
+				"defaultCountMode": "Inline",
+				"defaultBindingMode": "TwoWay",
+				"defaultOperationMode": "Client",
+				"sequentializeRequests": true
 			}
 		},
 		"routing": {
@@ -86,21 +92,18 @@
 				},
 				"async": true
 			},
-			"routes": [
-				{
-					"pattern": "",
-					"name": "master",
-					"target": "master"
-				},
-				{
-					"pattern": "Surveys/{objectId}",
-					"name": "object",
-					"target": [
-						"master",
-						"object"
-					]
-				}
-			],
+			"routes": [{
+				"pattern": "",
+				"name": "master",
+				"target": "master"
+			}, {
+				"pattern": "Surveys",
+				"name": "object",
+				"target": [
+					"master",
+					"object"
+				]
+			}],
 			"targets": {
 				"master": {
 					"viewName": "Master",

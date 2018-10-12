@@ -2,33 +2,33 @@
 	controllerName="pnp.survey.controller.Detail">
 	<semantic:SemanticPage id="detailPage" busy="{detailView>/busy}" busyIndicatorDelay="{detailView>/delay}" showFooter="true">
 		<semantic:titleHeading>
-			<Title text="{TopicID}"/>
+			<Title text="{SubmissionModel>/TopicID}"/>
 		</semantic:titleHeading>
 		<semantic:headerContent>
-			<ObjectAttribute title="{i18n>priceTitle}"/>
+			<ObjectAttribute text="{SubmissionModel>/TopicText}"/>
 		</semantic:headerContent>
 		<semantic:content>
-			<layout:Grid content="{toQuestions}" width="100%" vSpacing="2" containerQuery="true" defaultSpan="L12 M12 S12">
+			<layout:Grid content="{ path: 'SubmissionModel>/toQuestions' }" width="100%" vSpacing="2" containerQuery="true" defaultSpan="L12 M12 S12">
 				<Panel expandable="true" expanded="true" width="auto" class="sapUiResponsiveMargin">
 					<headerToolbar>
 						<Toolbar height="3rem" style="Clear">
-							<Title text="{QuestionText}"/>
+							<Title text="{SubmissionModel>QuestionText}"/>
 							<ToolbarSpacer/>
-							<Button icon="sap-icon://legend"/>
+							<Button icon="sap-icon://legend" text="{i18n>textLegend}"/>
 						</Toolbar>
 					</headerToolbar>
 					<content>
-						<FlexBox alignItems="Start" justifyContent="SpaceAround" width="100%" direction="Column" fitContainer="true" height="100%"
-							alignContent="SpaceAround" renderType="Bare">
+						<FlexBox alignItems="Start" width="100%" direction="Column" fitContainer="true" height="100%" renderType="Bare" visible="true">
 							<items>
-								<Text text="{QuestionText}" class="sapUiMediumMarginEnd">
+								<Text text="{SubmissionModel>Explanation}">
 									<layoutData>
-										<FlexItemData minHeight="30px"/>
+										<FlexItemData minHeight="30px" styleClass="sapUiSmallMarginTop"/>
 									</layoutData>
 								</Text>
-								<Slider value="5" min="0" max="10" enableTickmarks="true" class="sapUiMediumMarginEnd" width="50%">
+								<Slider value="2" min="{SubmissionModel>toAnswer/AnswerRangeFrom}" max="{SubmissionModel>toAnswer/AnswerRangeTo}" enableTickmarks="true"
+									width="50%">
 									<layoutData>
-										<FlexItemData minHeight="60px"/>
+										<FlexItemData minHeight="50px" styleClass="sapUiSmallMarginTop"/>
 									</layoutData>
 								</Slider>
 							</items>
