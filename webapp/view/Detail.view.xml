@@ -14,7 +14,7 @@
 						<Toolbar height="3rem" style="Clear">
 							<Title text="{SubmissionModel>QuestionText}"/>
 							<ToolbarSpacer/>
-							<Button icon="sap-icon://legend" text="{i18n>textLegend}"/>
+							<Button icon="sap-icon://legend" text="{i18n>textLegend}" press="onPressShowLegend"/>
 						</Toolbar>
 					</headerToolbar>
 					<content>
@@ -25,9 +25,9 @@
 										<FlexItemData minHeight="30px" styleClass="sapUiSmallMarginTop"/>
 									</layoutData>
 								</Text>
-								<Slider value="{SubmissionModel>toAnswer/AnswerOptionValue}" min="{SubmissionModel>toAnswerTemplate/AnswerRangeFrom}"
+								<Slider value="{SubmissionModel>toAnswers/0/AnswerOptionValue}" min="{SubmissionModel>toAnswerTemplate/AnswerRangeFrom}"
 									max="{SubmissionModel>toAnswerTemplate/AnswerRangeTo}" step="{SubmissionModel>toAnswerTemplate/AnswerRangeIncrement}" enableTickmarks="true"
-									width="50%" showAdvancedTooltip="True">
+									width="50%" progress="true" enabled="{SubmissionModel>/isEditable}">
 									<layoutData>
 										<FlexItemData minHeight="50px" styleClass="sapUiSmallMarginTop"/>
 									</layoutData>
@@ -54,7 +54,7 @@
 				visible="{= !${device>/system/phone} &amp;&amp; ${appView>/actionButtonsInfo/midColumn/fullScreen}}" press="toggleFullScreen"/>
 		</semantic:exitFullScreenAction>
 		<semantic:footerMainAction>
-			<semantic:FooterMainAction text="Submit" id="action2"/>
+			<semantic:FooterMainAction id="btnSubmitSurvey" text="Submit" enabled="{detailView>/isSubmitEnabled}"/>
 		</semantic:footerMainAction>
 	</semantic:SemanticPage>
 </mvc:View>

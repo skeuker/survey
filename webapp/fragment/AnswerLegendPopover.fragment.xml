@@ -1,0 +1,27 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<ResponsivePopover id="popAnswerLegend" title="{i18n>titleAnswerLegendPopover}" class="sapUiContentPadding" placement="Bottom"
+		contentWidth="50%">
+		<content>
+			<Table id="tabAnswerOptionsLegendPopover" noDataText="No entries" title="{i18n>titleAnswerOptionsLegendTable}"
+				items="{ path : 'SubmissionModel>toAnswerOptions' }">
+				<ColumnListItem type="Inactive">
+					<cells>
+						<ObjectIdentifier title="{SubmissionModel>AnswerOptionValue}"/>
+						<Text maxLines="1" text="{SubmissionModel>AnswerOptionLegend}"/>
+					</cells>
+				</ColumnListItem>
+				<columns>
+					<Column width="12em">
+						<header>
+							<Text text="Option"/>
+						</header>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true">
+						<header>
+							<Text text="Legend"/>
+						</header>
+					</Column>
+				</Table>
+			</content>
+		</ResponsivePopover>
+	</core:FragmentDefinition>

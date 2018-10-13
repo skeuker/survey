@@ -92,7 +92,8 @@ sap.ui.define([
 							TopicID: oData.TopicID,
 							AnchorID: oData.AnchorID,
 							TopicText: oData.TopicText,
-							ParticipantID: oData.ParticipantID
+							ParticipantID: oData.ParticipantID,
+							isEditable: oData.isEditable
 						};
 
 						//questions are available
@@ -128,11 +129,31 @@ sap.ui.define([
 
 										//merge with rating previously provided
 										if (oQuestion.toAnswers) {
+
+											//where answers have been provided
 											if (oQuestion.toAnswers.results.length > 0) {
-												oQuestion.toAnswer = {
-													AnswerOptionValue: Number(oQuestion.toAnswers.results[0].AnswerOptionValue)
-												};
+
+												//adopt answers
+												oQuestion.toAnswers = oQuestion.toAnswers.results;
+
+												//format answers
+												oQuestion.toAnswers.forEach(function (oAnswer) {
+													oAnswer.AnswerOptionValue = Number(oAnswer.AnswerOptionValue);
+
+												});
+
 											}
+
+										}
+
+										//no answers have previously been provided
+										if (!oQuestion.toAnswers || (oQuestion.toAnswers.results && oQuestion.toAnswers.results.length === 0)) {
+
+											//construct initial answer from template
+											oQuestion.toAnswers = [{
+												AnswerOptionValue: null
+											}];
+
 										}
 
 									}
@@ -146,6 +167,9 @@ sap.ui.define([
 						//set model to view
 						this.oSubmissionModel = new JSONModel(oSurvey);
 						this.getView().setModel(this.oSubmissionModel, "SubmissionModel");
+
+						//set enabled state of submit button
+						this.oViewModel.setProperty("/isSubmitEnabled", oSurvey.isEditable);
 
 						//set view model to no longer busy
 						this.oViewModel.setProperty("/busy", false);
@@ -228,7 +252,35 @@ sap.ui.define([
 				// reset to previous layout
 				this.getModel("appView").setProperty("/layout", this.getModel("appView").getProperty("/previousLayout"));
 			}
+		},
+
+		//on press show legend
+		onPressShowLegend: function (oEvent) {
+
+			//get related question
+			var oPanel = oEvent.getSource().getParent().getParent();
+			var oQuestion = oPanel.getBindingContext("SubmissionModel").getObject();
+			var oQuestionModel = new JSONModel(oQuestion);
+
+			//create legend popover
+			var oLegendPopover = sap.ui.xmlfragment("pnp.survey.fragment.AnswerLegendPopover", this);
+			oLegendPopover.setModel(oQuestionModel);
+			oLegendPopover.attachAfterClose(function () {
+				oLegendPopover.destroy();
+			});
+			this.getView().addDependent(oLegendPopover);
+
+			//attach list itemPress event
+			sap.ui.getCore().byId("tabPersonSelectPopover").attachEventOnce("itemPress", {}, this.onPressPersonSelectDialogListItem, this);
+
+			// delay because addDependent will do a async rerendering 
+			var oSubmitSurveyButton = this.getView().byId("btnSubmitSurvey");
+			jQuery.sap.delayedCall(0, this, function () {
+				oLegendPopover.openBy(oSubmitSurveyButton);
+			});
+
 		}
+
 	});
 
 });

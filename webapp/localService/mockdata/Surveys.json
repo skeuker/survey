@@ -3,17 +3,20 @@
 	"AnchorID": "67256",
 	"TopicID": "Mel Munro",
 	"TopicText": "Project Manager",
-	"ParticipantID": "Stefan "
+	"ParticipantID": "Stefan ",
+	"isEditable": true
 }, {
 	"SurveyID": "2",
 	"AnchorID": "67256",
 	"TopicID": "Barnie Botha",
 	"TopicText": "Functional Consultant",
-	"ParticipantID": "Stefan"
+	"ParticipantID": "Stefan",
+	"isEditable": true
 }, {
 	"SurveyID": "3",
 	"AnchorID": "67256",
 	"TopicID": "Myself",
 	"TopicText": "Software Developer",
-	"ParticipantID": "Stefan"
+	"ParticipantID": "Stefan",
+	"isEditable": true
 }]
