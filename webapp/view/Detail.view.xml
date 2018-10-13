@@ -27,7 +27,7 @@
 								</Text>
 								<Slider value="{SubmissionModel>toAnswers/0/AnswerOptionValue}" min="{SubmissionModel>toAnswerTemplate/AnswerRangeFrom}"
 									max="{SubmissionModel>toAnswerTemplate/AnswerRangeTo}" step="{SubmissionModel>toAnswerTemplate/AnswerRangeIncrement}" enableTickmarks="true"
-									width="50%" progress="true" enabled="{SubmissionModel>/isEditable}">
+									width="50%" progress="true" enabled="{SubmissionModel>/isEditable}" change="onSliderSetAnswer">
 									<layoutData>
 										<FlexItemData minHeight="50px" styleClass="sapUiSmallMarginTop"/>
 									</layoutData>

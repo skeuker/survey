@@ -301,6 +301,14 @@ sap.ui.define([
 				oLegendPopover.openBy(oSubmitSurveyButton);
 			});
 
+		},
+
+		//upon using a slider to answer a question
+		onSliderSetAnswer: function (oEvent) {
+
+			//get question being answered
+			var oQuestion = oEvent.getSource().getBindingContext("SubmissionModel").getObject();
+
 		}
 
 	});
