@@ -32,6 +32,11 @@ sap.ui.define([
 			//keep track of OData model
 			this.oSurveyModel = this.getOwnerComponent().getModel("SurveyModel")
 
+			//initiate interaction with message manager	
+			this.oMessageProcessor = new sap.ui.core.message.ControlMessageProcessor();
+			this.oMessageManager = sap.ui.getCore().getMessageManager();
+			this.oMessageManager.registerMessageProcessor(this.oMessageProcessor);
+
 			this.getOwnerComponent().getModel("SurveyModel").metadataLoaded().then(this._onMetadataLoaded.bind(this));
 		},
 
@@ -67,6 +72,9 @@ sap.ui.define([
 
 			//format master detail view display
 			this.getModel("appView").setProperty("/layout", "TwoColumnsMidExpanded");
+
+			//remove all messages from the message manager
+			this.oMessageManager.removeAllMessages();
 
 			//bind detail view to selected survey
 			var oNavData = oEvent.getParameter("data");
@@ -171,6 +179,23 @@ sap.ui.define([
 						//set enabled state of submit button
 						this.oViewModel.setProperty("/isSubmitEnabled", oSurvey.isEditable);
 
+						//set message where survey no longer editable
+						if (!oSurvey.isEditable) {
+
+							//inform that this survey can't be edited
+							var oMessage = {};
+							oMessage.MessageText = this.getResourceBundle().getText("messageSurveyNoLongerEditable");
+							oMessage.MessageType = "Information";
+
+							//push to messages array
+							var aMessages = [];
+							aMessages.push(oMessage);
+
+							//set message to message popover button
+							this.setEntityMessages(aMessages);
+
+						}
+
 						//set view model to no longer busy
 						this.oViewModel.setProperty("/busy", false);
 
@@ -260,21 +285,18 @@ sap.ui.define([
 			//get related question
 			var oPanel = oEvent.getSource().getParent().getParent();
 			var oQuestion = oPanel.getBindingContext("SubmissionModel").getObject();
-			var oQuestionModel = new JSONModel(oQuestion);
+			var oLegendModel = new JSONModel(oQuestion.toAnswerTemplate);
 
 			//create legend popover
 			var oLegendPopover = sap.ui.xmlfragment("pnp.survey.fragment.AnswerLegendPopover", this);
-			oLegendPopover.setModel(oQuestionModel);
+			oLegendPopover.setModel(oLegendModel, "LegendModel");
 			oLegendPopover.attachAfterClose(function () {
 				oLegendPopover.destroy();
 			});
 			this.getView().addDependent(oLegendPopover);
 
-			//attach list itemPress event
-			sap.ui.getCore().byId("tabPersonSelectPopover").attachEventOnce("itemPress", {}, this.onPressPersonSelectDialogListItem, this);
-
 			// delay because addDependent will do a async rerendering 
-			var oSubmitSurveyButton = this.getView().byId("btnSubmitSurvey");
+			var oSubmitSurveyButton = oEvent.getSource();
 			jQuery.sap.delayedCall(0, this, function () {
 				oLegendPopover.openBy(oSubmitSurveyButton);
 			});

@@ -4,7 +4,7 @@
 	"TopicID": "Mel Munro",
 	"TopicText": "Project Manager",
 	"ParticipantID": "Stefan ",
-	"isEditable": true
+	"isEditable": false
 }, {
 	"SurveyID": "2",
 	"AnchorID": "67256",

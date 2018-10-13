@@ -5,29 +5,34 @@
 	"AnswerOptionRangeTo": 5,
 	"AnswerOptionID": "1",
 	"AnswerOptionValue": "1",
-	"AnswerOptionHint": "Not so great"
+	"AnswerOptionHint": "Not so great",
+	"AnswerOptionLegend": "Not good. It was really tedious to work together. Will avoid this if I can in future."
 }, {
 	"SurveyID": "1",
 	"AnswerTemplateID": "1",
 	"AnswerOptionID": "2",
 	"AnswerOptionValue": "2",
-	"AnswerOptionHint": "A little better"
+	"AnswerOptionHint": "A little better",
+	"AnswerOptionLegend": "Kind of ok. We got things done and it was still a drag. If I can help it I'll choose to work with another person next time."
 }, {
 	"SurveyID": "1",
 	"AnswerTemplateID": "1",
 	"AnswerOptionID": "3",
 	"AnswerOptionValue": "3",
-	"AnswerOptionHint": "Quite good"
+	"AnswerOptionHint": "Quite good",
+	"AnswerOptionLegend": "Ok. All in order we got along and got things done."
 }, {
 	"SurveyID": "1",
 	"AnswerTemplateID": "1",
 	"AnswerOptionID": "4",
 	"AnswerOptionValue": "4",
-	"AnswerOptionHint": "Good"
+	"AnswerOptionHint": "Good",
+	"AnswerOptionLegend": "Good. It was really pleasant to work together. Didn't have to spell everything out. There was some independent thinking going on."
 }, {
 	"SurveyID": "1",
 	"AnswerTemplateID": "1",
 	"AnswerOptionID": "5",
 	"AnswerOptionValue": "5",
-	"AnswerOptionHint": "Excellent"
+	"AnswerOptionHint": "Excellent",
+	"AnswerOptionLegend": "Great. I will pick this person to interact as we got all an everything done blindly relying on each other without ever having been disappointed."
 }]

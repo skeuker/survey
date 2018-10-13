@@ -24,7 +24,7 @@
 				<Property Name="AnswerTemplateID" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="AnswerOptionID" Type="Edm.String" Nullable="false" sap:label=""></Property>
 				<Property Name="AnswerOptionValue" Type="Edm.String" Nullable="false"></Property>
-				<Property Name="AnswerOptionHint" Type="Edm.String" Nullable="true"></Property>
+				<Property Name="AnswerOptionLegend" Type="Edm.String" Nullable="true"></Property>
 			</EntityType>
 			<EntityType Name="Survey">
 				<Key>
@@ -118,16 +118,11 @@
 				</ReferentialConstraint>
 			</Association>
 			<EntityContainer Name="EC1" m:IsDefaultEntityContainer="true">
-				<EntitySet Name="Topics" EntityType="pnp.Topic"></EntitySet>
 				<EntitySet Name="Surveys" EntityType="pnp.Survey"></EntitySet>
 				<EntitySet Name="Questions" EntityType="pnp.Question"></EntitySet>
 				<EntitySet Name="AnswerTemplates" EntityType="pnp.AnswerTemplate"></EntitySet>
 				<EntitySet Name="AnswerTemplateOptions" EntityType="pnp.AnswerTemplateOption"></EntitySet>
 				<EntitySet Name="Answers" EntityType="pnp.Answer"></EntitySet>
-				<AssociationSet Name="SurveyAnswerTemplatesAssoc" Association="pnp.SurveyAnswerTemplates">
-					<End Role="Parent" EntitySet="Surveys" ></End>
-					<End Role="Child"  EntitySet="AnswerTemplates"></End>
-				</AssociationSet>
 				<AssociationSet Name="SurveyQuestionsAssoc" Association="pnp.SurveyQuestions">
 					<End Role="Parent" EntitySet="Surveys" ></End>
 					<End Role="Child"  EntitySet="Questions"></End>
@@ -135,6 +130,14 @@
 				<AssociationSet Name="SurveyQuestionAnswersAssoc" Association="pnp.QuestionAnswers">
 					<End Role="Parent" EntitySet="Questions" ></End>
 					<End Role="Child"  EntitySet="Answers"></End>
+				</AssociationSet>
+				<AssociationSet Name="SurveyAnswerTemplatesAssoc" Association="pnp.SurveyAnswerTemplates">
+					<End Role="Parent" EntitySet="Surveys" ></End>
+					<End Role="Child"  EntitySet="AnswerTemplates"></End>
+				</AssociationSet>
+				<AssociationSet Name="SurveyAnswerTemplateOptionsAssoc" Association="pnp.AnswerTemplateOptions">
+					<End Role="Parent" EntitySet="AnswerTemplates" ></End>
+					<End Role="Child"  EntitySet="AnswerTemplateOptions"></End>
 				</AssociationSet>
 			</EntityContainer>
 		</Schema>

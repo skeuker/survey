@@ -20,7 +20,7 @@
 					<content>
 						<FlexBox alignItems="Start" width="100%" direction="Column" fitContainer="true" height="100%" renderType="Bare" visible="true">
 							<items>
-								<Text text="{SubmissionModel>Explanation}">
+								<Text text="{SubmissionModel>Explanation}" width="80%">
 									<layoutData>
 										<FlexItemData minHeight="30px" styleClass="sapUiSmallMarginTop"/>
 									</layoutData>
@@ -53,6 +53,9 @@
 			<semantic:ExitFullScreenAction id="exitFullScreen"
 				visible="{= !${device>/system/phone} &amp;&amp; ${appView>/actionButtonsInfo/midColumn/fullScreen}}" press="toggleFullScreen"/>
 		</semantic:exitFullScreenAction>
+		<semantic:messagesIndicator>
+			<semantic:MessagesIndicator press="onMessagesButtonPress"/>
+		</semantic:messagesIndicator>
 		<semantic:footerMainAction>
 			<semantic:FooterMainAction id="btnSubmitSurvey" text="Submit" enabled="{detailView>/isSubmitEnabled}"/>
 		</semantic:footerMainAction>
