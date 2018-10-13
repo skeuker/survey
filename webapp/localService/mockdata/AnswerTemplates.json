@@ -12,4 +12,11 @@
 	"AnswerRangeFrom": 0,
 	"AnswerRangeTo": 6,
 	"AnswerRangeIncrement": 1
+}, {
+	"SurveyID": "1",
+	"AnswerTemplateID": "3",
+	"AnswerTypeID": "Range",
+	"AnswerRangeFrom": 0,
+	"AnswerRangeTo": 10,
+	"AnswerRangeIncrement": 2
 }]

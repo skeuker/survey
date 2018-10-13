@@ -80,7 +80,7 @@ sap.ui.define([
 
 					//url parameters
 					urlParameters: {
-						"$expand": "toQuestions,toAnswerTemplates,toAnswerTemplateOptions,toSubmissions"
+						"$expand": "toQuestions,toQuestions/toAnswers,toAnswerTemplates,toAnswerTemplates/toAnswerTemplateOptions"
 					},
 
 					//success callback handler
@@ -105,16 +105,6 @@ sap.ui.define([
 							oSurvey.toAnswerTemplates = oData.toAnswerTemplates.results;
 						}
 
-						//answerTemplateOptoins are available
-						if (oData.toAnswerTemplateOptions) {
-							oSurvey.toAnswerTemplateOptions = oData.toAnswerTemplateOptions.results;
-						}
-
-						//submissions are available
-						if (oData.toSubmissions) {
-							oSurvey.toSubmissions = oData.toSubmissions.results;
-						}
-
 						//construct answers for each question
 						oSurvey.toQuestions.forEach(function (oQuestion) {
 
@@ -124,34 +114,25 @@ sap.ui.define([
 								//answer template of question matches this answer template
 								if (oQuestion.AnswerTemplateID === oAnswerTemplate.AnswerTemplateID) {
 
+									//keep track of answer template
+									oQuestion.toAnswerTemplate = oAnswerTemplate;
+
+									//keep track of answer options
+									if (oAnswerTemplate.toAnswerTemplateOptions) {
+										oQuestion.toAnswerTemplate.toAnswerTemplateOptions = oAnswerTemplate.toAnswerTemplateOptions.results;
+
+									}
+
 									//for answer template of type 'Range'
 									if (oAnswerTemplate.AnswerTypeID === "Range") {
 
-										//construct answer
-										oQuestion.toAnswer = {
-											AnswerRangeFrom: oAnswerTemplate.AnswerRangeFrom,
-											AnswerRangeTo: oAnswerTemplate.AnswerRangeTo
-										}
-
-										//provide legend for answer options
-										if (oSurvey.toAnswerTemplateOptions) {
-
-											//initialize this answers options
-											oQuestion.toAnswer.toAnswerOptions = [];
-
-											//for each answer template option
-											oSurvey.toAnswerTemplateOptions.forEach(function (oOption) {
-
-												//matching this answer template
-												if (oOption.AnswerTemplateID === oAnswerTemplate.AnswerTemplateID) {
-													oQuestion.toAnswer.toAnswerOptions.push({
-														AnswerOptionID: oOption.AnswerOptionID,
-														AnswerOptionHint: oOption.AnswerOptionHint
-													});
-												}
-
-											});
-
+										//merge with rating previously provided
+										if (oQuestion.toAnswers) {
+											if (oQuestion.toAnswers.results.length > 0) {
+												oQuestion.toAnswer = {
+													AnswerOptionValue: Number(oQuestion.toAnswers.results[0].AnswerOptionValue)
+												};
+											}
 										}
 
 									}

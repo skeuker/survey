@@ -25,8 +25,9 @@
 										<FlexItemData minHeight="30px" styleClass="sapUiSmallMarginTop"/>
 									</layoutData>
 								</Text>
-								<Slider value="2" min="{SubmissionModel>toAnswer/AnswerRangeFrom}" max="{SubmissionModel>toAnswer/AnswerRangeTo}" enableTickmarks="true"
-									width="50%">
+								<Slider value="{SubmissionModel>toAnswer/AnswerOptionValue}" min="{SubmissionModel>toAnswerTemplate/AnswerRangeFrom}"
+									max="{SubmissionModel>toAnswerTemplate/AnswerRangeTo}" step="{SubmissionModel>toAnswerTemplate/AnswerRangeIncrement}" enableTickmarks="true"
+									width="50%" showAdvancedTooltip="True">
 									<layoutData>
 										<FlexItemData minHeight="50px" styleClass="sapUiSmallMarginTop"/>
 									</layoutData>

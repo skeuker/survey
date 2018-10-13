@@ -1,21 +1,6 @@
 <edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:sap="http://www.sap.com/Protocols/SAPData">
 	<edmx:DataServices xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" m:DataServiceVersion="2.0">
 		<Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" Namespace="pnp">
-			<EntityType Name="Topic">
-				<Key>
-					<PropertyRef  Name="TopicID"/>
-				</Key>
-				<Property Name="TopicID" Type="Edm.String" Nullable="false" sap:label="Topic"></Property>
-				<Property Name="TopicText" Type="Edm.String" Nullable="false"></Property>
-				<Property Name="Language" Type="Edm.String" Nullable="false"></Property>
-			</EntityType>
-			<EntityType Name="Participant">
-				<Key>
-					<PropertyRef  Name="ParticipantID"/>
-				</Key>
-				<Property Name="ParticipantID" Type="Edm.String" Nullable="false" sap:label=""></Property>
-				<Property Name="ParticipantText" Type="Edm.String" Nullable="false"></Property>
-			</EntityType>
 			<EntityType Name="AnswerTemplate">
 				<Key>
 					<PropertyRef Name="SurveyID"/>
@@ -27,8 +12,6 @@
 				<Property Name="AnswerRangeFrom" Type="Edm.Decimal" Nullable="true"></Property>
 				<Property Name="AnswerRangeTo" Type="Edm.Decimal" Nullable="true"></Property>
 				<Property Name="AnswerRangeIncrement" Type="Edm.Decimal" Nullable="true"></Property>
-				<Property Name="AnswerMeasure" Type="Edm.String" Nullable="true"></Property>
-				<Property Name="AnswerWeight" Type="Edm.String" Nullable="true"></Property>
 				<NavigationProperty Name="toAnswerTemplateOptions" Relationship="pnp.AnswerTemplateOptions" ToRole="Child" FromRole="Parent"></NavigationProperty>
 			</EntityType>
 			<EntityType Name="AnswerTemplateOption">
@@ -53,9 +36,7 @@
 				<Property Name="TopicText" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="ParticipantID" Type="Edm.String" Nullable="true"></Property>
 				<NavigationProperty Name="toQuestions" Relationship="pnp.SurveyQuestions" ToRole="Child" FromRole="Parent"></NavigationProperty>
-				<NavigationProperty Name="toSubmissions" Relationship="pnp.SurveySubmissions" ToRole="Child" FromRole="Parent"></NavigationProperty>
 				<NavigationProperty Name="toAnswerTemplates" Relationship="pnp.SurveyAnswerTemplates" ToRole="Child" FromRole="Parent"></NavigationProperty>
-				<NavigationProperty Name="toAnswerTemplateOptions" Relationship="pnp.SurveyAnswerTemplateOptions" ToRole="Child" FromRole="Parent"></NavigationProperty>
 			</EntityType>
 			<EntityType Name="Question">
 				<Key>
@@ -68,30 +49,20 @@
 				<Property Name="Language" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="Explanation" Type="Edm.String" Nullable="true"></Property>
 				<Property Name="AnswerTemplateID" Type="Edm.String" Nullable="false"></Property>
+				<Property Name="SurveyMeasure" Type="Edm.String" Nullable="true"></Property>
+				<Property Name="QuestionWeight" Type="Edm.String" Nullable="true"></Property>
+				<NavigationProperty Name="toAnswers" Relationship="pnp.QuestionAnswers" ToRole="Child" FromRole="Parent"></NavigationProperty>
 			</EntityType>
 			<EntityType Name="Answer">
 				<Key>
-					<PropertyRef Name="SubmissionID"/>
+					<PropertyRef Name="SurveyID"/>
+					<PropertyRef Name="QuestionID"/>
 					<PropertyRef Name="AnswerID"/>
 				</Key>
-				<Property Name="SubmissionID" Type="Edm.String" Nullable="false"></Property>
-				<Property Name="AnswerID" Type="Edm.String" Nullable="false"></Property>
+				<Property Name="SurveyID" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="QuestionID" Type="Edm.String" Nullable="false"></Property>
-				<Property Name="AnswerRangeFrom" Type="Edm.Decimal" Nullable="true"></Property>
-				<Property Name="AnswerRangeTo" Type="Edm.Decimal" Nullable="true"></Property>
-				<Property Name="AnswerRangeIncrement" Type="Edm.Decimal" Nullable="true"></Property>
+				<Property Name="AnswerID" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="AnswerOptionValue" Type="Edm.String" Nullable="false"></Property>
-			</EntityType>
-			<EntityType Name="Submission">
-				<Key>
-					<PropertyRef Name="SubmissionID"/>
-				</Key>
-				<Property Name="SubmissionID" Type="Edm.String" Nullable="false"></Property>
-				<Property Name="AnchorID" Type="Edm.String" Nullable="false"></Property>
-				<Property Name="TopicID" Type="Edm.String" Nullable="false" sap:label=""></Property>
-				<Property Name="SurveyID" Type="Edm.String" Nullable="false" sap:label=""></Property>
-				<Property Name="ParticipantID" Type="Edm.String" Nullable="false"></Property>
-				<NavigationProperty Name="toAnswers" Relationship="pnp.SubmittedAnswers" ToRole="Child" FromRole="Parent"></NavigationProperty>
 			</EntityType>
 			<Association Name="SurveyQuestions">
 				<End Type="pnp.Survey" Role="Parent" Multiplicity="1"></End>
@@ -117,18 +88,6 @@
 					</Dependent>
 				</ReferentialConstraint>
 			</Association>
-			<Association Name="SurveyAnswerTemplateOptions">
-				<End Type="pnp.Survey" Role="Parent" Multiplicity="1"></End>
-				<End Type="pnp.AnswerTemplateOption" Role="Child" Multiplicity="*"></End>
-				<ReferentialConstraint>
-					<Principal Role="Parent">
-						<PropertyRef Name="SurveyID"/>
-					</Principal>
-					<Dependent Role="Child">
-						<PropertyRef Name="SurveyID"/>
-					</Dependent>
-				</ReferentialConstraint>
-			</Association>
 			<Association Name="AnswerTemplateOptions">
 				<End Type="pnp.AnswerTemplate" Role="Parent" Multiplicity="1"></End>
 				<End Type="pnp.AnswerTemplateOption" Role="Child" Multiplicity="*"></End>
@@ -143,27 +102,17 @@
 					</Dependent>
 				</ReferentialConstraint>
 			</Association>
-			<Association Name="SubmittedAnswers">
-				<End Type="pnp.Submission" Role="Parent" Multiplicity="1"></End>
+			<Association Name="QuestionAnswers">
+				<End Type="pnp.Question" Role="Parent" Multiplicity="1"></End>
 				<End Type="pnp.Answer" Role="Child" Multiplicity="*"></End>
 				<ReferentialConstraint>
 					<Principal Role="Parent">
-						<PropertyRef Name="SubmissionID"/>
-					</Principal>
-					<Dependent Role="Child">
-						<PropertyRef Name="SubmissionID"/>
-					</Dependent>
-				</ReferentialConstraint>
-			</Association>
-			<Association Name="SurveySubmissions">
-				<End Type="pnp.Survey" Role="Parent" Multiplicity="1"></End>
-				<End Type="pnp.Submission" Role="Child" Multiplicity="*"></End>
-				<ReferentialConstraint>
-					<Principal Role="Parent">
 						<PropertyRef Name="SurveyID"/>
+						<PropertyRef Name="QuestionID"/>
 					</Principal>
 					<Dependent Role="Child">
 						<PropertyRef Name="SurveyID"/>
+						<PropertyRef Name="AnswerID"/>
 					</Dependent>
 				</ReferentialConstraint>
 			</Association>
@@ -173,27 +122,18 @@
 				<EntitySet Name="Questions" EntityType="pnp.Question"></EntitySet>
 				<EntitySet Name="AnswerTemplates" EntityType="pnp.AnswerTemplate"></EntitySet>
 				<EntitySet Name="AnswerTemplateOptions" EntityType="pnp.AnswerTemplateOption"></EntitySet>
-				<EntitySet Name="Submissions" EntityType="pnp.Submission"></EntitySet>
 				<EntitySet Name="Answers" EntityType="pnp.Answer"></EntitySet>
 				<AssociationSet Name="SurveyAnswerTemplatesAssoc" Association="pnp.SurveyAnswerTemplates">
 					<End Role="Parent" EntitySet="Surveys" ></End>
 					<End Role="Child"  EntitySet="AnswerTemplates"></End>
 				</AssociationSet>
-				<AssociationSet Name="SurveyAnswerTemplateOptionsAssoc" Association="pnp.SurveyAnswerTemplateOptions">
-					<End Role="Parent" EntitySet="Surveys" ></End>
-					<End Role="Child"  EntitySet="AnswerTemplateOptions"></End>
-				</AssociationSet>
-				<AssociationSet Name="AnswerTemplateOptionsAssoc" Association="pnp.AnswerTemplateOptions">
-					<End Role="Parent" EntitySet="AnswerTemplates" ></End>
-					<End Role="Child"  EntitySet="AnswerTemplateOptions"></End>
-				</AssociationSet>
 				<AssociationSet Name="SurveyQuestionsAssoc" Association="pnp.SurveyQuestions">
 					<End Role="Parent" EntitySet="Surveys" ></End>
 					<End Role="Child"  EntitySet="Questions"></End>
 				</AssociationSet>
-				<AssociationSet Name="SurveySubmissionsAssoc" Association="pnp.SurveySubmissions">
-					<End Role="Parent" EntitySet="Surveys" ></End>
-					<End Role="Child"  EntitySet="Submissions"></End>
+				<AssociationSet Name="SurveyQuestionAnswersAssoc" Association="pnp.QuestionAnswers">
+					<End Role="Parent" EntitySet="Questions" ></End>
+					<End Role="Child"  EntitySet="Answers"></End>
 				</AssociationSet>
 			</EntityContainer>
 		</Schema>
