@@ -23,7 +23,7 @@
 				</headerToolbar>
 				<items>
 					<StandardListItem type="Navigation" press="onSelectionChange" title="{SurveyModel>TopicID}" description="{SurveyModel>TopicText}"
-						info="{= ${SurveyModel>isPersisted} === true? 'Submitted' : 'To do' }"></StandardListItem>
+						info="{= ${SurveyModel>isPersisted} === true? 'Submitted' : 'to submit' }"></StandardListItem>
 				</items>
 			</List>
 		</semantic:content>

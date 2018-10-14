@@ -392,6 +392,9 @@ sap.ui.define([
 						return;
 					}
 
+					//set survey persisted property to update object page status
+					this.oSubmissionModel.setProperty("/isPersisted", true);
+
 					//message handling: survey submitted successfully
 					this.setEntityMessages([{
 						MessageText: this.getResourceBundle().getText("messageSurveySubmittedSuccessfully"),
