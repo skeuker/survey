@@ -53,6 +53,7 @@
 				<Property Name="AnswerTemplateID" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="SurveyMeasure" Type="Edm.String" Nullable="true"></Property>
 				<Property Name="QuestionWeight" Type="Edm.String" Nullable="true"></Property>
+				<Property Name="isAnswerOptional" Type="Edm.Boolean" Nullable="true"></Property>
 				<NavigationProperty Name="toAnswers" Relationship="pnp.QuestionAnswers" ToRole="Child" FromRole="Parent"></NavigationProperty>
 			</EntityType>
 			<EntityType Name="Answer">
