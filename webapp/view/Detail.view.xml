@@ -20,11 +20,11 @@
 					<content>
 						<FlexBox alignItems="Start" width="100%" direction="Column" fitContainer="true" height="100%" renderType="Bare" visible="true">
 							<items>
-								<Text text="{SubmissionModel>Explanation}" width="80%">
+								<TextArea value="{SubmissionModel>Explanation}" growing="true" growingMaxLines="5" width="80%" editable="false" wrapping="Soft">
 									<layoutData>
 										<FlexItemData minHeight="30px" styleClass="sapUiSmallMarginTop"/>
 									</layoutData>
-								</Text>
+								</TextArea>
 								<Slider value="{SubmissionModel>toAnswers/0/AnswerOptionValue}" min="{SubmissionModel>toAnswerTemplate/AnswerRangeFrom}"
 									max="{SubmissionModel>toAnswerTemplate/AnswerRangeTo}" step="{SubmissionModel>toAnswerTemplate/AnswerRangeIncrement}" enableTickmarks="true"
 									width="50%" progress="true" enabled="{detailView>/isEditable}" change="onSliderSetAnswer">
