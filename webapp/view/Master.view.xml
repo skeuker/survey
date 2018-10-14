@@ -22,7 +22,8 @@
 					</OverflowToolbar>
 				</headerToolbar>
 				<items>
-					<ObjectListItem type="Navigation" press="onSelectionChange" title="{SurveyModel>TopicID}" intro="{SurveyModel>TopicText}"></ObjectListItem>
+					<StandardListItem type="Navigation" press="onSelectionChange" title="{SurveyModel>TopicID}" description="{SurveyModel>TopicText}"
+						info="{= ${SurveyModel>isPersisted} === true? 'Submitted' : 'To do' }"></StandardListItem>
 				</items>
 			</List>
 		</semantic:content>

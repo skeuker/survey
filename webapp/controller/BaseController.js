@@ -142,6 +142,84 @@ sap.ui.define([
 			//toggle message popover display
 			oMessagePopover.toggle(oMessagesButton);
 
+		},
+
+		//check for and visualize errors in BatchResponses
+		hasODataBatchErrorResponse: function (aBatchResponses) {
+
+			//local data declaration
+			var oMessage = {};
+			var aMessages = [];
+
+			//no further processing where input not type compliant
+			if (!Array.isArray(aBatchResponses)) {
+				return false;
+			}
+
+			//for each batchResponse
+			aBatchResponses.forEach(function (oBatchResponse) {
+
+				//where a batchResponse is contained
+				if (oBatchResponse.response) {
+
+					//by type of HTTP ok code
+					switch (oBatchResponse.response.statusCode) {
+
+						//where HTTP ok code is 400 "Bad Request"
+					case "400":
+
+						//interprese backend error
+						if (oBatchResponse.response.body) {
+
+							//for exception handling
+							try {
+
+								//parse response body containing error
+								var oResponseBody = JSON.parse(oBatchResponse.response.body);
+
+								//construct message
+								if (oResponseBody.error) {
+
+									//adopt error attributes into message	
+									oMessage.MessageText = oResponseBody.error.message.value;
+									oMessage.MessageCode = oResponseBody.error.code;
+									oMessage.MessageType = "Error";
+
+									//push to messages array
+									aMessages.push(oMessage);
+
+								}
+
+								//exception handling: failed to parse
+							} catch (oException) {
+								//explicitly none
+							}
+
+						}
+
+					}
+
+				}
+
+			});
+
+			//message handling
+			if (aMessages.length > 0) {
+
+				//set messages to message popover button
+				this.setEntityMessages(aMessages);
+
+				//set view to no busy
+				this.oViewModel.setProperty("/busy", false);
+
+				//feedback to caller: errors occured
+				return true;
+
+			}
+
+			//feedback to caller: no errors occured
+			return false;
+
 		}
 
 	});

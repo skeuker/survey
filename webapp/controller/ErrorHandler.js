@@ -16,16 +16,16 @@ sap.ui.define([
 		constructor: function (oComponent) {
 			this._oResourceBundle = oComponent.getModel("i18n").getResourceBundle();
 			this._oComponent = oComponent;
-			this._oSurveyModel = oComponent.getModel("SurveyModel");
+			this.oSurveyModel = oComponent.getModel("SurveyModel");
 			this._bMessageOpen = false;
 			this._sErrorText = this._oResourceBundle.getText("errorText");
 
-			this._oSurveyModel.attachMetadataFailed(function (oEvent) {
+			this.oSurveyModel.attachMetadataFailed(function (oEvent) {
 				var oParams = oEvent.getParameters();
 				this._showServiceError(oParams.response);
 			}, this);
 
-			this._oSurveyModel.attachRequestFailed(function (oEvent) {
+			this.oSurveyModel.attachRequestFailed(function (oEvent) {
 				var oParams = oEvent.getParameters();
 				// An entity that was not found in the service is also throwing a 404 error in oData.
 				// We already cover this case with a notFound target so we skip it here.

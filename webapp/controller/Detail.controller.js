@@ -176,23 +176,24 @@ sap.ui.define([
 						this.oSubmissionModel = new JSONModel(oSurvey);
 						this.getView().setModel(this.oSubmissionModel, "SubmissionModel");
 
-						//set enabled state of submit button
-						this.oViewModel.setProperty("/isSubmitEnabled", oSurvey.isEditable);
+						//bind view to object instance
+						this.getView().bindElement({
+							path: "/",
+							model: "SubmissionModel"
+						}, {});
+
+						//set enabled state of survey UI input controls and submit button
+						this.oViewModel.setProperty("/isEditable", oSurvey.isEditable);
+						this.oViewModel.setProperty("/isSubmitEnabled", this.isSurveyAnsweredCompletely());
 
 						//set message where survey no longer editable
 						if (!oSurvey.isEditable) {
 
 							//inform that this survey can't be edited
-							var oMessage = {};
-							oMessage.MessageText = this.getResourceBundle().getText("messageSurveyNoLongerEditable");
-							oMessage.MessageType = "Information";
-
-							//push to messages array
-							var aMessages = [];
-							aMessages.push(oMessage);
-
-							//set message to message popover button
-							this.setEntityMessages(aMessages);
+							this.setEntityMessages([{
+								MessageText: this.getResourceBundle().getText("messageSurveyNoLongerEditable"),
+								MessageType: "Information"
+							}]);
 
 						}
 
@@ -207,7 +208,10 @@ sap.ui.define([
 
 		},
 
+		//on change of detail view binding
 		_onBindingChange: function () {
+
+			//get view and view 'element binding'
 			var oView = this.getView(),
 				oElementBinding = oView.getElementBinding();
 
@@ -233,8 +237,10 @@ sap.ui.define([
 				oResourceBundle.getText("shareSendEmailObjectSubject", [sObjectId]));
 			oViewModel.setProperty("/shareSendEmailMessage",
 				oResourceBundle.getText("shareSendEmailObjectMessage", [sObjectName, sObjectId, location.href]));
+
 		},
 
+		//handler for MetadataLoaded event
 		_onMetadataLoaded: function () {
 
 			// Store original busy indicator delay for the detail view
@@ -248,6 +254,7 @@ sap.ui.define([
 
 			// Binding the view will set it to not busy - so the view is always busy if it is not bound
 			oViewModel.setProperty("/busy", true);
+
 			// Restore original busy indicator delay for the detail view
 			oViewModel.setProperty("/delay", iOriginalViewBusyDelay);
 
@@ -306,8 +313,101 @@ sap.ui.define([
 		//upon using a slider to answer a question
 		onSliderSetAnswer: function (oEvent) {
 
-			//get question being answered
+			//keep track that answer option value was set
 			var oQuestion = oEvent.getSource().getBindingContext("SubmissionModel").getObject();
+
+			//where '0' was explicitly set as slider value
+			if (!oEvent.getSource().getValue()) { //0 is false in javascript boolean logic
+				oQuestion.toAnswers.forEach(function (oAnswer) {
+					oAnswer.OptionValueWasSet = true;
+				});
+			}
+
+			//set enabled state of submit button
+			this.oViewModel.setProperty("/isSubmitEnabled", this.isSurveyAnsweredCompletely());
+
+		},
+
+		//inspect whether survey is answered completely
+		isSurveyAnsweredCompletely: function (oEvent) {
+
+			//local data declaration
+			var bAllQuestionsAnswered = true;
+
+			//get survey being filled in
+			var oSurvey = this.getView().getBindingContext("SubmissionModel").getObject();
+
+			//for each question in this survey
+			oSurvey.toQuestions.forEach(function (oQuestion) {
+
+				//check whether all questions have been answered
+				oQuestion.toAnswers.forEach(function (oAnswer) {
+					if (!oAnswer.AnswerOptionValue && !oAnswer.OptionValueWasSet) {
+						bAllQuestionsAnswered = false;
+					}
+				});
+
+			});
+
+			//feedback to caller
+			return bAllQuestionsAnswered;
+
+		},
+
+		//event handler for button press to submit survey
+		onPressSubmitSurvey: function () {
+
+			//set view to busy
+			this.oViewModel.setProperty("/busy", true);
+
+			//get survey being filled in
+			var oSurvey = this.getView().getBindingContext("SubmissionModel").getObject();
+
+			//for each question in this survey
+			oSurvey.toQuestions.forEach(function (oQuestion) {
+
+				//check whether all questions have been answered
+				oQuestion.toAnswers.forEach(function (oAnswer) {
+
+					//create key for each answer in survey OData model
+					var sAnswerKey = this.oSurveyModel.createKey("Answers", oAnswer);
+
+					//create entry for submission to backend
+					this.oSurveyModel.createEntry(sAnswerKey, {
+						properties: oAnswer
+					});
+
+				}.bind(this));
+
+			}.bind(this));
+
+			//submit changes to the backend
+			this.oSurveyModel.submitChanges({
+
+				//success callback function
+				success: function (oData) {
+
+					//inspect batchResponses for errors and visualize
+					if (this.hasODataBatchErrorResponse(oData.__batchResponses)) {
+						return;
+					}
+
+					//message handling: survey submitted successfully
+					this.setEntityMessages([{
+						MessageText: this.getResourceBundle().getText("messageSurveySubmittedSuccessfully"),
+						MessageType: "Success"
+					}]);
+
+					//disable form entry
+					this.oViewModel.setProperty("/isSubmitEnabled", false);
+					this.oViewModel.setProperty("/isEditable", false);
+
+					//set view to no longer busy
+					this.oViewModel.setProperty("/busy", false);
+
+				}.bind(this)
+
+			});
 
 		}
 

@@ -35,6 +35,7 @@
 				<Property Name="TopicID" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="TopicText" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="ParticipantID" Type="Edm.String" Nullable="true"></Property>
+				<Property Name="isPersisted" Type="Edm.Boolean" Nullable="true"></Property>
 				<Property Name="isEditable" Type="Edm.Boolean" Nullable="true"></Property>
 				<NavigationProperty Name="toQuestions" Relationship="pnp.SurveyQuestions" ToRole="Child" FromRole="Parent"></NavigationProperty>
 				<NavigationProperty Name="toAnswerTemplates" Relationship="pnp.SurveyAnswerTemplates" ToRole="Child" FromRole="Parent"></NavigationProperty>
@@ -64,6 +65,7 @@
 				<Property Name="QuestionID" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="AnswerID" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="AnswerOptionValue" Type="Edm.String" Nullable="false"></Property>
+				<Property Name="OptionValueWasSet" Type="Edm.Boolean" Nullable="true"></Property>
 			</EntityType>
 			<Association Name="SurveyQuestions">
 				<End Type="pnp.Survey" Role="Parent" Multiplicity="1"></End>
