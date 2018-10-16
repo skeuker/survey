@@ -1,0 +1,13 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:layout="sap.ui.layout">
+	<ResponsivePopover id="popSurveyNavigate" title="{i18n>titleSurveyNavigator}" class="sapUiContentPadding" placement="Left"
+		contentWidth="10%">
+		<content>
+			<layout:VerticalLayout width="100%" class="gridWrapper">
+				<layout:Grid content="{ path: 'NavigateModel>/toQuestions' }" containerQuery="true">
+					<Button text="{= 'Question ' + ${NavigateModel>QuestionNumber} }"
+						type="{= ${NavigateModel>toAnswers/0/AnswerOptionValue} === null ? 'Transparent' : 'Emphasized' }" press="onPressNavigateToQuestion"/>
+				</layout:Grid>
+			</layout:VerticalLayout>
+		</content>
+	</ResponsivePopover>
+</core:FragmentDefinition>

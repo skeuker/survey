@@ -66,7 +66,6 @@
 				<Property Name="QuestionID" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="AnswerID" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="AnswerOptionValue" Type="Edm.String" Nullable="false"></Property>
-				<Property Name="OptionValueWasSet" Type="Edm.Boolean" Nullable="true"></Property>
 			</EntityType>
 			<Association Name="SurveyQuestions">
 				<End Type="pnp.Survey" Role="Parent" Multiplicity="1"></End>

@@ -1,3 +1,12 @@
+//jquery scrolling
+$.fn.scrollView = function () {
+	return this.each(function () {
+		$('html, body').animate({
+			scrollTop: $(this).offset().top
+		}, 1000);
+	});
+}
+
 /*global location */
 sap.ui.define([
 	"pnp/survey/controller/BaseController",
@@ -94,6 +103,9 @@ sap.ui.define([
 					//success callback handler
 					success: function (oData, oResponse) {
 
+						//local data declaration
+						var iQuestionNumber = 0;
+
 						//construct suitable JSON model
 						var oSurvey = {
 							SurveyID: oData.SurveyID,
@@ -116,6 +128,9 @@ sap.ui.define([
 
 						//construct answers for each question
 						oSurvey.toQuestions.forEach(function (oQuestion) {
+
+							//do question numbering
+							oQuestion.QuestionNumber = ++iQuestionNumber;
 
 							//for each answer template
 							oSurvey.toAnswerTemplates.forEach(function (oAnswerTemplate) {
@@ -316,13 +331,6 @@ sap.ui.define([
 			//keep track that answer option value was set
 			var oQuestion = oEvent.getSource().getBindingContext("SubmissionModel").getObject();
 
-			//where '0' was explicitly set as slider value
-			if (!oEvent.getSource().getValue()) { //0 is false in javascript boolean logic
-				oQuestion.toAnswers.forEach(function (oAnswer) {
-					oAnswer.OptionValueWasSet = true;
-				});
-			}
-
 			//set enabled state of submit button
 			this.oViewModel.setProperty("/isSubmitEnabled", this.isSurveyAnsweredCompletely());
 
@@ -342,7 +350,7 @@ sap.ui.define([
 
 				//check whether all questions have been answered
 				oQuestion.toAnswers.forEach(function (oAnswer) {
-					if (!oAnswer.AnswerOptionValue && !oAnswer.OptionValueWasSet) {
+					if (oAnswer.AnswerOptionValue === null) {
 						bAllQuestionsAnswered = false;
 					}
 				});
@@ -411,6 +419,50 @@ sap.ui.define([
 				}.bind(this)
 
 			});
+
+		},
+
+		//on press show navigator
+		onPressNavigateSurvey: function (oEvent) {
+
+			//get related question
+			var oSurvey = this.getView().getBindingContext("SubmissionModel").getObject();
+			var oNavigateModel = new JSONModel(oSurvey);
+
+			//create navigate popover
+			var oNavigatePopover = sap.ui.xmlfragment("pnp.survey.fragment.SurveyNavigatePopover", this);
+			oNavigatePopover.setModel(oNavigateModel, "NavigateModel");
+			oNavigatePopover.attachAfterClose(function () {
+				oNavigatePopover.destroy();
+			});
+			this.getView().addDependent(oNavigatePopover);
+
+			//delay because addDependent will do a async rerendering 
+			var oNavigateSurveyButton = oEvent.getSource();
+			jQuery.sap.delayedCall(0, this, function () {
+				oNavigatePopover.openBy(oNavigateSurveyButton);
+			});
+
+		},
+
+		//on press navigate to questions
+		onPressNavigateToQuestion: function (oEvent) {
+
+			//get survey grid content
+			var aGridContent = this.getView().byId("gridSurvey").getContent();
+
+			//get number of selected question
+			var aMatchGroups = /(\d)/.exec(oEvent.getSource().getText());
+
+			//derive panel ID in this view
+			var iPanelIndex = aMatchGroups[0] - 1;
+			var sPanelID = '#' + aGridContent[iPanelIndex].sId;
+
+			//scroll to top of requested panel
+			$(sPanelID).scrollView();
+
+			//set focus on requested question
+			aGridContent[iPanelIndex].focus();
 
 		}
 

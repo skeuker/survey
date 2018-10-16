@@ -14,7 +14,8 @@
 			</FlexBox>
 		</semantic:headerContent>
 		<semantic:content>
-			<layout:Grid content="{ path: 'SubmissionModel>/toQuestions' }" width="100%" vSpacing="2" containerQuery="true" defaultSpan="L12 M12 S12">
+			<layout:Grid id="gridSurvey" content="{ path: 'SubmissionModel>/toQuestions' }" width="100%" vSpacing="2" containerQuery="true"
+				defaultSpan="L12 M12 S12">
 				<Panel expandable="true" expanded="true" width="auto" class="sapUiResponsiveMargin">
 					<headerToolbar>
 						<Toolbar height="3rem" style="Clear">
@@ -62,6 +63,9 @@
 		<semantic:messagesIndicator>
 			<semantic:MessagesIndicator press="onMessagesButtonPress"/>
 		</semantic:messagesIndicator>
+		<semantic:titleCustomTextActions>
+			<Button id="btnNavigateSurvey" text="Navigate" enabled="true" press="onPressNavigateSurvey"/>
+		</semantic:titleCustomTextActions>
 		<semantic:footerMainAction>
 			<semantic:FooterMainAction id="btnSubmitSurvey" text="Submit" enabled="{detailView>/isSubmitEnabled}" press="onPressSubmitSurvey"/>
 		</semantic:footerMainAction>

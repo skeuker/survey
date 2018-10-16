@@ -1,7 +1,7 @@
 [{
 	"SurveyID": "1",
 	"QuestionID": "1",
-	"QuestionText": "Considering that a detailed requirement specification is so important, how was the specification? ",
+	"QuestionText": "How good was the specification of required work? ",
 	"Language": "en",
 	"AnswerTemplateID": "1",
 	"Explanation": "Evaluate how well you were able to work with the input provided. "
@@ -19,4 +19,11 @@
 	"Language": "en",
 	"AnswerTemplateID": "3",
 	"Explanation": "Evaluate whether your counterpart has shown interest in your recommendations. Doing so at times leads to an overall better solution."
+}, {
+	"SurveyID": "1",
+	"QuestionID": "4",
+	"QuestionText": "Would you work with this person if the opportunity arises?",
+	"Language": "en",
+	"Explanation": "In an interest to build highly performing teams we'd like to find out whether the two of you work well together.",
+	"AnswerTemplateID": "1"
 }]
