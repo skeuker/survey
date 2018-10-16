@@ -1,12 +1,3 @@
-//jquery scrolling
-$.fn.scrollView = function () {
-	return this.each(function () {
-		$('html, body').animate({
-			scrollTop: $(this).offset().top
-		}, 1000);
-	});
-}
-
 /*global location */
 sap.ui.define([
 	"pnp/survey/controller/BaseController",
@@ -36,7 +27,7 @@ sap.ui.define([
 			this.setModel(this.oViewModel, "detailView");
 
 			//attach to display event for survey detail
-			this.getRouter().getTarget("object").attachDisplay(this.onDisplay, this);
+			this.getRouter().getTarget("detail").attachDisplay(this.onDisplay, this);
 
 			//keep track of OData model
 			this.oSurveyModel = this.getOwnerComponent().getModel("SurveyModel")
@@ -279,10 +270,13 @@ sap.ui.define([
 		 * Set the full screen mode to false and navigate to master page
 		 */
 		onCloseDetailPress: function () {
+
+			//return to full screen master display
 			this.getModel("appView").setProperty("/actionButtonsInfo/midColumn/fullScreen", false);
 			// No item should be selected on master after detail page is closed
 			this.getOwnerComponent().oListSelector.clearMasterListSelection();
-			this.getRouter().navTo("master");
+			this.getRouter().getTarget("master").display();
+
 		},
 
 		/**
@@ -456,13 +450,10 @@ sap.ui.define([
 
 			//derive panel ID in this view
 			var iPanelIndex = aMatchGroups[0] - 1;
-			var sPanelID = '#' + aGridContent[iPanelIndex].sId;
-
-			//scroll to top of requested panel
-			$(sPanelID).scrollView();
+			var sPageID = '#' + "detailPage";
 
 			//set focus on requested question
-			aGridContent[iPanelIndex].focus();
+			$(sPageID).scrollTop(10);
 
 		}
 

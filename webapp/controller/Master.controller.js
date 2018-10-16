@@ -24,6 +24,7 @@ sap.ui.define([
 		 * @public
 		 */
 		onInit: function () {
+
 			// Control state model
 			var oList = this.byId("list"),
 				oViewModel = this._createViewModel(),
@@ -54,7 +55,11 @@ sap.ui.define([
 				}.bind(this)
 			});
 
-			this.getRouter().getRoute("master").attachPatternMatched(this._onMasterMatched, this);
+			//set survey anchor to view model for filtering in master view
+			oViewModel.setProperty("/sWrkreqid", this.getOwnerComponent().sWrkreqid);
+
+			//register event handler for view display
+			this.getRouter().getTarget("master").attachDisplay(this.onDisplay, this);
 			this.getRouter().attachBypassed(this.onBypassed, this);
 		},
 
@@ -225,7 +230,7 @@ sap.ui.define([
 			});
 		},
 
-		_onMasterMatched: function () {
+		onDisplay: function () {
 
 			//Set the layout property of the FCL control to 'OneColumn'
 			this.getModel("appView").setProperty("/layout", "OneColumn");
@@ -244,7 +249,7 @@ sap.ui.define([
 			this.getModel("appView").setProperty("/layout", "TwoColumnsMidExpanded");
 
 			//display detail corresponding to the selected survey
-			this.getRouter().getTargets().display("object", {
+			this.getRouter().getTargets().display("detail", {
 				SurveyID: oItem.getBindingContext("SurveyModel").getProperty("SurveyID"),
 				AnchorID: oItem.getBindingContext("SurveyModel").getProperty("AnchorID"),
 				TopicID: oItem.getBindingContext("SurveyModel").getProperty("TopicID"),

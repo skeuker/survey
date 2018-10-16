@@ -19,13 +19,15 @@
 				<Panel expandable="true" expanded="true" width="auto" class="sapUiResponsiveMargin">
 					<headerToolbar>
 						<Toolbar height="3rem" style="Clear">
-							<Title text="{SubmissionModel>QuestionText}" maxLines="1"/>
+							<core:Icon src="{= ${SubmissionModel>toAnswers/0/AnswerOptionValue} === null ? 'sap-icon://message-warning' : 'sap-icon://accept' }"
+								color="#346187" class="sapUiTinyMarginEnd"/>
+							<Title text="{= ${SubmissionModel>QuestionNumber} + '. ' + ${SubmissionModel>QuestionText} }" maxLines="1"/>
 							<ToolbarSpacer/>
 							<Button icon="sap-icon://legend" text="{i18n>textLegend}" press="onPressShowLegend"/>
 						</Toolbar>
 					</headerToolbar>
 					<content>
-						<FlexBox alignItems="Start" width="100%" direction="Column" fitContainer="true" height="100%" renderType="Bare" visible="true">
+						<FlexBox alignItems=" Start" width="100%" direction="Column" fitContainer="true" height="100%" renderType="Bare" visible="true">
 							<items>
 								<TextArea value="{SubmissionModel>Explanation}" growing="true" growingMaxLines="5" width="80%" editable="false" wrapping="Soft">
 									<layoutData>
@@ -45,10 +47,6 @@
 				</Panel>
 			</layout:Grid>
 		</semantic:content>
-		<!--Semantic ShareMenu Buttons-->
-		<semantic:sendEmailAction>
-			<semantic:SendEmailAction id="shareEmail" press="onSendEmailPress"/>
-		</semantic:sendEmailAction>
 		<semantic:closeAction>
 			<semantic:CloseAction id="closeColumn" press="onCloseDetailPress"/>
 		</semantic:closeAction>

@@ -98,10 +98,10 @@
 				"target": "master"
 			}, {
 				"pattern": "Surveys",
-				"name": "object",
+				"name": "detail",
 				"target": [
 					"master",
-					"object"
+					"detail"
 				]
 			}],
 			"targets": {
@@ -110,7 +110,7 @@
 					"viewLevel": 1,
 					"viewId": "master"
 				},
-				"object": {
+				"detail": {
 					"viewName": "Detail",
 					"viewId": "detail",
 					"viewLevel": 1,

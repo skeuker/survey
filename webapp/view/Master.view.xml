@@ -6,7 +6,7 @@
 		<semantic:content>
 			<!-- For client side filtering add this to the items attribute: parameters: {operationMode: 'Client'}}" -->
 			<List id="list" width="auto" class="sapFDynamicPageAlignContent"
-				items="{ path: 'SurveyModel>/Surveys', sorter: { path: 'TopicID', descending: false }, groupHeaderFactory: '.createGroupHeader' }"
+				items="{ path: 'SurveyModel>/Surveys', filters: [{path: 'AnchorID', operator: 'EQ', value1: '67256' }], sorter: { path: 'TopicID', descending: false }, groupHeaderFactory: '.createGroupHeader' }"
 				busyIndicatorDelay="{masterView>/delay}" noDataText="{masterView>/noDataText}"
 				mode="{= ${device>/system/phone} ? 'None' : 'SingleSelectMaster'}" growing="true" growingScrollToLoad="true"
 				updateFinished="onUpdateFinished" selectionChange="onSelectionChange">
