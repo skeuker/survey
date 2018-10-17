@@ -2,10 +2,12 @@
 	"SurveyID": "1",
 	"QuestionID": "1",
 	"AnswerID": "1",
-	"AnswerOptionValue": "4"
+	"AnswerOptionValue": "4",
+	"isPersisted": false
 }, {
 	"SurveyID": "1",
 	"QuestionID": "4",
 	"AnswerID": "1",
-	"AnswerOptionValue": "1"
+	"AnswerOptionValue": "1",
+	"isPersisted": true
 }]

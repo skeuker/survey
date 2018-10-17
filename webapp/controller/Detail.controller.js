@@ -131,6 +131,9 @@ sap.ui.define([
 						//construct answers for each question
 						oSurvey.toQuestions.forEach(function (oQuestion) {
 
+							//local data declaration
+							var iAnswerID = 0;
+
 							//do question numbering
 							oQuestion.QuestionNumber = ++iQuestionNumber;
 
@@ -158,7 +161,6 @@ sap.ui.define([
 												//format answers
 												oQuestion.toAnswers.forEach(function (oAnswer) {
 													oAnswer.AnswerOptionValue = Number(oAnswer.AnswerOptionValue);
-
 												});
 
 											}
@@ -170,7 +172,11 @@ sap.ui.define([
 
 											//construct initial answer from template
 											oQuestion.toAnswers = [{
-												AnswerOptionValue: null
+												SurveyID: oSurvey.SurveyID,
+												QuestionID: oQuestion.QuestionID,
+												AnswerID: ++iAnswerID,
+												AnswerOptionValue: null,
+												isPersisted: false
 											}];
 
 										}
@@ -370,6 +376,38 @@ sap.ui.define([
 			//get survey being filled in
 			var oSurvey = this.getView().getBindingContext("SubmissionModel").getObject();
 
+			//Create survey key in survey OData model
+			var sSurveyKey = this.oSurveyModel.createKey("Surveys", oSurvey);
+
+			//Create or change survey depending on persistance state
+			switch (oSurvey.isPersisted) {
+
+				//survey previously persisted
+			case true:
+
+				//adopt current survey attributes for update
+				for (var sProperty in oSurvey) {
+
+					//for each non-key survey attribute
+					if (sProperty !== "SurveyID") {
+						this.oSurveyModel.setProperty("/" + sSurveyKey + "/" + sProperty, oSurvey[sProperty]);
+					}
+
+				}
+
+				//no further processing here
+				break;
+
+				//survey not previously persisted
+			case false:
+
+				//create entry for submission to backend
+				this.oSurveyModel.createEntry(sSurveyKey, {
+					properties: oSurvey
+				});
+
+			}
+
 			//for each question in this survey
 			oSurvey.toQuestions.forEach(function (oQuestion) {
 
@@ -379,10 +417,25 @@ sap.ui.define([
 					//create key for each answer in survey OData model
 					var sAnswerKey = this.oSurveyModel.createKey("Answers", oAnswer);
 
-					//create entry for submission to backend
-					this.oSurveyModel.createEntry(sAnswerKey, {
-						properties: oAnswer
-					});
+					//Create or change answer depending on persistance state
+					switch (oAnswer.isPersisted) {
+
+						//answer previously persisted
+					case true:
+						this.oSurveyModel.setProperty("/" + sAnswerKey + "/AnswerOptionValue", oAnswer.AnswerOptionValue);
+
+						//no further processing here
+						break;
+
+						//answer not previously persisted
+					case false:
+
+						//create entry for submission to backend
+						this.oSurveyModel.createEntry(sAnswerKey, {
+							properties: oAnswer
+						});
+
+					}
 
 				}.bind(this));
 

@@ -66,6 +66,7 @@
 				<Property Name="QuestionID" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="AnswerID" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="AnswerOptionValue" Type="Edm.String" Nullable="false"></Property>
+				<Property Name="isPersisted" Type="Edm.Boolean" Nullable="true"></Property>
 			</EntityType>
 			<Association Name="SurveyQuestions">
 				<End Type="pnp.Survey" Role="Parent" Multiplicity="1"></End>
@@ -115,7 +116,7 @@
 					</Principal>
 					<Dependent Role="Child">
 						<PropertyRef Name="SurveyID"/>
-						<PropertyRef Name="AnswerID"/>
+						<PropertyRef Name="QuestionID"/>
 					</Dependent>
 				</ReferentialConstraint>
 			</Association>

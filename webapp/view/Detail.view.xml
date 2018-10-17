@@ -19,7 +19,7 @@
 			</FlexBox>
 		</semantic:headerContent>
 		<semantic:content>
-			<layout:Grid id="gridSurvey" content="{ path: 'SubmissionModel>/toQuestions' }" width="100%" vSpacing="2" containerQuery="true"
+			<layout:Grid id="gridSurvey" content="{ path: 'SubmissionModel>/toQuestions' }" width="100%" vSpacing="1" containerQuery="true"
 				defaultSpan="L12 M12 S12">
 				<Panel expandable="true" expanded="true" width="auto" class="sapUiResponsiveMargin">
 					<headerToolbar>

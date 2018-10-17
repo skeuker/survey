@@ -5,7 +5,8 @@
 	"TopicText": "Project Manager",
 	"ParticipantID": "Stefan ",
 	"isEditable": true,
-	"AnchorText": "Work request 67256: PO BAdI for free item discount at delivery time"
+	"AnchorText": "Work request 67256: PO BAdI for free item discount at delivery time",
+	"isPersisted": true
 }, {
 	"SurveyID": "2",
 	"AnchorID": "67256",
@@ -13,7 +14,8 @@
 	"TopicText": "Functional Consultant",
 	"ParticipantID": "Stefan",
 	"isEditable": true,
-	"AnchorText": "Work request 67256: PO BAdI for free item discount at delivery time"
+	"AnchorText": "Work request 67256: PO BAdI for free item discount at delivery time",
+	"isPersisted": false
 }, {
 	"SurveyID": "3",
 	"AnchorID": "67256",
@@ -21,5 +23,6 @@
 	"TopicText": "Software Developer",
 	"ParticipantID": "Stefan",
 	"isEditable": true,
-	"AnchorText": "Work request 67256: PO BAdI for free item discount at delivery time"
+	"AnchorText": "Work request 67256: PO BAdI for free item discount at delivery time",
+	"isPersisted": false
 }]
