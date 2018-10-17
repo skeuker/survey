@@ -7,8 +7,9 @@ sap.ui.define([
 	"sap/ui/model/FilterOperator",
 	"sap/m/GroupHeaderListItem",
 	"sap/ui/Device",
-	"pnp/survey/model/formatter"
-], function (BaseController, JSONModel, Filter, Sorter, FilterOperator, GroupHeaderListItem, Device, formatter) {
+	"pnp/survey/model/formatter",
+	"sap/m/StandardListItem"
+], function (BaseController, JSONModel, Filter, Sorter, FilterOperator, GroupHeaderListItem, Device, formatter, StandardListItem) {
 	"use strict";
 
 	return BaseController.extend("pnp.survey.controller.Master", {
@@ -55,6 +56,9 @@ sap.ui.define([
 				}.bind(this)
 			});
 
+			//keep track of OData model
+			this.oSurveyModel = this.getOwnerComponent().getModel("SurveyModel");
+
 			//set survey anchor to view model for filtering in master view
 			oViewModel.setProperty("/sWrkreqid", this.getOwnerComponent().sWrkreqid);
 
@@ -89,6 +93,8 @@ sap.ui.define([
 		 * @public
 		 */
 		onSearch: function (oEvent) {
+
+			//refresh search button called
 			if (oEvent.getParameters().refreshButtonPressed) {
 				// Search field's 'refresh' button has been pressed.
 				// This is visible if you select any master list item.
@@ -230,10 +236,46 @@ sap.ui.define([
 			});
 		},
 
+		//handler for view display event
 		onDisplay: function () {
 
 			//Set the layout property of the FCL control to 'OneColumn'
 			this.getModel("appView").setProperty("/layout", "OneColumn");
+
+			//bind master list 'items' aggregation to OData content
+			this.getView().byId("list").bindAggregation("items", {
+
+				//path to OData 
+				path: "SurveyModel>/Surveys",
+
+				//filter by survey anchor
+				filters: [new Filter({
+					path: "AnchorID",
+					operator: 'EQ',
+					value1: "67256" //this.oViewModel.getProperty("/sWrkreqid")
+				})],
+
+				//sorter for result set
+				sorter: new Sorter('TopicID', false),
+
+				//group header factory
+				groupHeaderFactory: this.createGroupHeader,
+
+				//filtering and sorting on client
+				parameters: {
+					operationMode: 'Client'
+				},
+
+				//UI control template
+				template: new StandardListItem({
+					type: "Navigation",
+					press: this.onSelectionChange,
+					title: "{SurveyModel>TopicID}",
+					description: "{SurveyModel>TopicText}",
+					info: "{= ${SurveyModel>isPersisted} === true? 'Submitted' : 'to submit' }"
+				})
+
+			});
 
 		},
 
@@ -264,12 +306,13 @@ sap.ui.define([
 		 * @private
 		 */
 		_updateListItemCount: function (iTotalItems) {
-			var sTitle;
+
 			// only update the counter if the length is final
 			if (this._oList.getBinding("items").isLengthFinal()) {
-				sTitle = this.getResourceBundle().getText("masterTitleCount", [iTotalItems]);
+				var sTitle = this.getResourceBundle().getText("masterTitleCount", [iTotalItems]);
 				this.getModel("masterView").setProperty("/title", sTitle);
 			}
+
 		},
 
 		/**

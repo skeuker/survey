@@ -4,12 +4,9 @@
 			<Title id="masterPageTitle" text="{masterView>/title}"/>
 		</semantic:titleHeading>
 		<semantic:content>
-			<!-- For client side filtering add this to the items attribute: parameters: {operationMode: 'Client'}}" -->
-			<List id="list" width="auto" class="sapFDynamicPageAlignContent"
-				items="{ path: 'SurveyModel>/Surveys', filters: [{path: 'AnchorID', operator: 'EQ', value1: '67256' }], sorter: { path: 'TopicID', descending: false }, groupHeaderFactory: '.createGroupHeader' }"
-				busyIndicatorDelay="{masterView>/delay}" noDataText="{masterView>/noDataText}"
-				mode="{= ${device>/system/phone} ? 'None' : 'SingleSelectMaster'}" growing="true" growingScrollToLoad="true"
-				updateFinished="onUpdateFinished" selectionChange="onSelectionChange">
+			<List id="list" width="auto" class="sapFDynamicPageAlignContent" busyIndicatorDelay="{masterView>/delay}"
+				noDataText="{masterView>/noDataText}" mode="{= ${device>/system/phone} ? 'None' : 'SingleSelectMaster'}" growing="true"
+				growingScrollToLoad="true" updateFinished="onUpdateFinished" selectionChange="onSelectionChange">
 				<headerToolbar>
 					<OverflowToolbar>
 						<SearchField id="searchField" showRefreshButton="true" tooltip="{i18n>masterSearchTooltip}" search="onSearch" width="auto">
@@ -21,10 +18,6 @@
 						<Button id="sortButton" press="onOpenViewSettings" icon="sap-icon://sort" type="Transparent"/>
 					</OverflowToolbar>
 				</headerToolbar>
-				<items>
-					<StandardListItem type="Navigation" press="onSelectionChange" title="{SurveyModel>TopicID}" description="{SurveyModel>TopicText}"
-						info="{= ${SurveyModel>isPersisted} === true? 'Submitted' : 'to submit' }"></StandardListItem>
-				</items>
 			</List>
 		</semantic:content>
 	</semantic:SemanticPage>

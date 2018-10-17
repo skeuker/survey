@@ -61,9 +61,7 @@
 		<semantic:messagesIndicator>
 			<semantic:MessagesIndicator press="onMessagesButtonPress"/>
 		</semantic:messagesIndicator>
-		<semantic:titleCustomTextActions>
-			<Button id="btnNavigateSurvey" text="Navigate" enabled="true" press="onPressNavigateSurvey"/>
-		</semantic:titleCustomTextActions>
+		<semantic:titleCustomTextActions></semantic:titleCustomTextActions>
 		<semantic:footerMainAction>
 			<semantic:FooterMainAction id="btnSubmitSurvey" text="Submit" enabled="{detailView>/isSubmitEnabled}" press="onPressSubmitSurvey"/>
 		</semantic:footerMainAction>
