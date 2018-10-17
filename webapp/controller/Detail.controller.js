@@ -117,6 +117,15 @@ sap.ui.define([
 							oSurvey.toAnswerTemplates = oData.toAnswerTemplates.results;
 						}
 
+						//formatting of answertemplate options
+						if (oSurvey.toAnswerTemplates.length > 0) {
+							oSurvey.toAnswerTemplates.forEach(function (oAnswerTemplate) {
+								if (oAnswerTemplate.toAnswerTemplateOptions) {
+									oAnswerTemplate.toAnswerTemplateOptions = oAnswerTemplate.toAnswerTemplateOptions.results;
+								}
+							});
+						}
+
 						//construct answers for each question
 						oSurvey.toQuestions.forEach(function (oQuestion) {
 
@@ -131,12 +140,6 @@ sap.ui.define([
 
 									//keep track of answer template
 									oQuestion.toAnswerTemplate = oAnswerTemplate;
-
-									//keep track of answer options
-									if (oAnswerTemplate.toAnswerTemplateOptions) {
-										oQuestion.toAnswerTemplate.toAnswerTemplateOptions = oAnswerTemplate.toAnswerTemplateOptions.results;
-
-									}
 
 									//for answer template of type 'Range'
 									if (oAnswerTemplate.AnswerTypeID === "Range") {
