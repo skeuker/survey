@@ -48,7 +48,6 @@
 				<Property Name="SurveyID" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="QuestionID" Type="Edm.String" Nullable="false" sap:label=""></Property>
 				<Property Name="QuestionText" Type="Edm.String" Nullable="false"></Property>
-				<Property Name="Language" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="Explanation" Type="Edm.String" Nullable="true"></Property>
 				<Property Name="AnswerTemplateID" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="SurveyMeasure" Type="Edm.String" Nullable="true"></Property>
@@ -66,7 +65,6 @@
 				<Property Name="QuestionID" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="AnswerID" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="AnswerOptionValue" Type="Edm.String" Nullable="false"></Property>
-				<Property Name="OptionValueWasSet" Type="Edm.Boolean" Nullable="true"></Property>
 			</EntityType>
 			<Association Name="SurveyQuestions">
 				<End Type="pnp.Survey" Role="Parent" Multiplicity="1"></End>

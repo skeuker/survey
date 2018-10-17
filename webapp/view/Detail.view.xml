@@ -2,12 +2,17 @@
 	controllerName="pnp.survey.controller.Detail">
 	<semantic:SemanticPage id="detailPage" busy="{detailView>/busy}" busyIndicatorDelay="{detailView>/delay}" showFooter="true">
 		<semantic:titleHeading>
-			<Title text="{SubmissionModel>/TopicID}"/>
+			<FlexBox alignItems="Start" direction="Row" class="sapUiSmallMarginTop">
+				<items>
+					<Title text="{SubmissionModel>/TopicID}"/>
+					<Text text="{SubmissionModel>/TopicText}" class="sapUiSmallMarginBegin pnpVerticalAlignMiddle"/>
+				</items>
+			</FlexBox>
 		</semantic:titleHeading>
 		<semantic:headerContent>
 			<FlexBox alignItems="Start" justifyContent="SpaceBetween">
 				<items>
-					<ObjectAttribute text="{SubmissionModel>/TopicText}"/>
+					<ObjectAttribute text="{SubmissionModel>/AnchorText}"/>
 					<ObjectStatus text="{= 'Survey status: ' + ( ${SubmissionModel>/isPersisted}? 'Submitted' : 'to submit' ) }"
 						state="{= ${SubmissionModel>/isPersisted}? 'Success' : 'Warning' }"/>
 				</items>
@@ -27,7 +32,7 @@
 						</Toolbar>
 					</headerToolbar>
 					<content>
-						<FlexBox alignItems=" Start" width="100%" direction="Column" fitContainer="true" height="100%" renderType="Bare" visible="true">
+						<FlexBox alignItems="Start" width="100%" direction="Column" fitContainer="true" height="100%" renderType="Bare" visible="true">
 							<items>
 								<TextArea value="{SubmissionModel>Explanation}" growing="true" growingMaxLines="5" width="80%" editable="false" wrapping="Soft">
 									<layoutData>

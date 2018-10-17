@@ -31,10 +31,11 @@
 					<PropertyRef  Name="SurveyID"/>
 				</Key>
 				<Property Name="SurveyID" Type="Edm.String" Nullable="false" sap:label="Survey"></Property>
+				<Property Name="ParticipantID" Type="Edm.String" Nullable="true"></Property>
 				<Property Name="AnchorID" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="TopicID" Type="Edm.String" Nullable="false"></Property>
-				<Property Name="TopicText" Type="Edm.String" Nullable="false"></Property>
-				<Property Name="ParticipantID" Type="Edm.String" Nullable="true"></Property>
+				<Property Name="TopicText" Type="Edm.String" Nullable="true"></Property>
+				<Property Name="AnchorText" Type="Edm.String" Nullable="true"></Property>
 				<Property Name="isPersisted" Type="Edm.Boolean" Nullable="true"></Property>
 				<Property Name="isEditable" Type="Edm.Boolean" Nullable="true"></Property>
 				<NavigationProperty Name="toQuestions" Relationship="pnp.SurveyQuestions" ToRole="Child" FromRole="Parent"></NavigationProperty>
@@ -48,7 +49,6 @@
 				<Property Name="SurveyID" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="QuestionID" Type="Edm.String" Nullable="false" sap:label=""></Property>
 				<Property Name="QuestionText" Type="Edm.String" Nullable="false"></Property>
-				<Property Name="Language" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="Explanation" Type="Edm.String" Nullable="true"></Property>
 				<Property Name="AnswerTemplateID" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="SurveyMeasure" Type="Edm.String" Nullable="true"></Property>

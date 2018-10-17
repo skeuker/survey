@@ -6,12 +6,15 @@ sap.ui.define([
 
 	return BaseController.extend("pnp.survey.controller.App", {
 
+		//on initialization of this controller
 		onInit: function () {
-			var oViewModel,
-				fnSetAppNotBusy,
+
+			//local data declaration
+			var fnSetAppNotBusy,
 				iOriginalBusyDelay = this.getView().getBusyIndicatorDelay();
 
-			oViewModel = new JSONModel({
+			//create a model to control UI behaviour
+			this.oViewModel = new JSONModel({
 				busy: true,
 				delay: 0,
 				layout: "OneColumn",
@@ -22,12 +25,15 @@ sap.ui.define([
 					}
 				}
 			});
-			this.setModel(oViewModel, "appView");
 
+			//set model to view
+			this.setModel(this.oViewModel, "appView");
+
+			//utility method to visualize view as no longer busy
 			fnSetAppNotBusy = function () {
-				oViewModel.setProperty("/busy", false);
-				oViewModel.setProperty("/delay", iOriginalBusyDelay);
-			};
+				this.oViewModel.setProperty("/busy", false);
+				this.oViewModel.setProperty("/delay", iOriginalBusyDelay);
+			}.bind(this);
 
 			// since then() has no "reject"-path attach to the MetadataFailed-Event to disable the busy indicator in case of an error
 			this.getOwnerComponent().getModel("SurveyModel").metadataLoaded().then(fnSetAppNotBusy);
@@ -35,6 +41,7 @@ sap.ui.define([
 
 			// apply content density mode to root view
 			this.getView().addStyleClass(this.getOwnerComponent().getContentDensityClass());
+
 		}
 
 	});

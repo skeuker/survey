@@ -4,19 +4,22 @@
 	"TopicID": "Mel Munro",
 	"TopicText": "Project Manager",
 	"ParticipantID": "Stefan ",
-	"isEditable": true
+	"isEditable": true,
+	"AnchorText": "Work request 67256: PO BAdI for free item discount at delivery time"
 }, {
 	"SurveyID": "2",
 	"AnchorID": "67256",
 	"TopicID": "Barnie Botha",
 	"TopicText": "Functional Consultant",
 	"ParticipantID": "Stefan",
-	"isEditable": true
+	"isEditable": true,
+	"AnchorText": "Work request 67256: PO BAdI for free item discount at delivery time"
 }, {
 	"SurveyID": "3",
 	"AnchorID": "67256",
 	"TopicID": "Myself",
 	"TopicText": "Software Developer",
 	"ParticipantID": "Stefan",
-	"isEditable": true
+	"isEditable": true,
+	"AnchorText": "Work request 67256: PO BAdI for free item discount at delivery time"
 }]
