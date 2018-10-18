@@ -11,7 +11,7 @@
 		},
 		"dataSources": {
 			"mainService": {
-				"uri": "/here/goes/your/serviceurl/",
+				"uri": "/sap/opu/odata/PNP/SAM_SURVEY_SRV/",
 				"type": "OData",
 				"settings": {
 					"odataVersion": "2.0",

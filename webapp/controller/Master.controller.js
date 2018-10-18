@@ -26,29 +26,32 @@ sap.ui.define([
 		 */
 		onInit: function () {
 
-			// Control state model
+			//local data declaration
 			var oList = this.byId("list"),
-				oViewModel = this._createViewModel(),
-				// Put down master list's original value for busy indicator delay,
-				// so it can be restored later on. Busy handling on the master list is
-				// taken care of by the master list itself.
 				iOriginalBusyDelay = oList.getBusyIndicatorDelay();
 
+			//create view model	
+			this.oViewModel = this._createViewModel();
+
+			//keep track of filter and search state
 			this._oList = oList;
-			// keeps the filter and search state
 			this._oListFilterState = {
 				aFilter: [],
 				aSearch: []
 			};
 
-			this.setModel(oViewModel, "masterView");
+			//set view model to view
+			this.setModel(this.oViewModel, "masterView");
+
 			// Make sure, busy indication is showing immediately so there is no
 			// break after the busy indication for loading the view's meta data is
 			// ended (see promise 'oWhenMetadataIsLoaded' in AppController)
 			oList.attachEventOnce("updateFinished", function () {
+
 				// Restore original busy indicator delay for the list
-				oViewModel.setProperty("/delay", iOriginalBusyDelay);
-			});
+				this.oViewModel.setProperty("/delay", iOriginalBusyDelay);
+
+			}.bind(this));
 
 			this.getView().addEventDelegate({
 				onBeforeFirstShow: function () {
@@ -60,7 +63,7 @@ sap.ui.define([
 			this.oSurveyModel = this.getOwnerComponent().getModel("SurveyModel");
 
 			//set survey anchor to view model for filtering in master view
-			oViewModel.setProperty("/sWrkreqid", this.getOwnerComponent().sWrkreqid);
+			this.oViewModel.setProperty("/sWrkreqid", this.getOwnerComponent().sWrkreqid);
 
 			//register event handler for view display
 			this.getRouter().getTarget("master").attachDisplay(this.onDisplay, this);
@@ -242,6 +245,12 @@ sap.ui.define([
 			//Set the layout property of the FCL control to 'OneColumn'
 			this.getModel("appView").setProperty("/layout", "OneColumn");
 
+			//get requested AnchorID
+			var sAnchorID = this.oViewModel.getProperty("/sWrkreqid");
+			if (sAnchorID === null) {
+				sAnchorID = "";
+			}
+
 			//bind master list 'items' aggregation to OData content
 			this.getView().byId("list").bindAggregation("items", {
 
@@ -252,7 +261,7 @@ sap.ui.define([
 				filters: [new Filter({
 					path: "AnchorID",
 					operator: 'EQ',
-					value1: "67256" //this.oViewModel.getProperty("/sWrkreqid")
+					value1: sAnchorID
 				})],
 
 				//sorter for result set
@@ -260,11 +269,6 @@ sap.ui.define([
 
 				//group header factory
 				groupHeaderFactory: this.createGroupHeader,
-
-				//filtering and sorting on client
-				parameters: {
-					operationMode: 'Client'
-				},
 
 				//UI control template
 				template: new StandardListItem({

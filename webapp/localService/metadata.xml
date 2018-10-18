@@ -12,7 +12,7 @@
 				<Property Name="AnswerRangeFrom" Type="Edm.Decimal" Nullable="true"></Property>
 				<Property Name="AnswerRangeTo" Type="Edm.Decimal" Nullable="true"></Property>
 				<Property Name="AnswerRangeIncrement" Type="Edm.Decimal" Nullable="true"></Property>
-				<NavigationProperty Name="toAnswerTemplateOptions" Relationship="pnp.AnswerTemplateOptions" ToRole="Child" FromRole="Parent"></NavigationProperty>
+				<NavigationProperty Name="toAnswerTemplateOptions" Relationship="pnp.AnswerTemplateAnswerOptions" ToRole="Child" FromRole="Parent"></NavigationProperty>
 			</EntityType>
 			<EntityType Name="AnswerTemplateOption">
 				<Key>
@@ -92,7 +92,7 @@
 					</Dependent>
 				</ReferentialConstraint>
 			</Association>
-			<Association Name="AnswerTemplateOptions">
+			<Association Name="AnswerTemplateAnswerOptions">
 				<End Type="pnp.AnswerTemplate" Role="Parent" Multiplicity="1"></End>
 				<End Type="pnp.AnswerTemplateOption" Role="Child" Multiplicity="*"></End>
 				<ReferentialConstraint>
@@ -138,7 +138,7 @@
 					<End Role="Parent" EntitySet="Surveys" ></End>
 					<End Role="Child"  EntitySet="AnswerTemplates"></End>
 				</AssociationSet>
-				<AssociationSet Name="SurveyAnswerTemplateOptionsAssoc" Association="pnp.AnswerTemplateOptions">
+				<AssociationSet Name="SurveyAnswerTemplateOptionsAssoc" Association="pnp.AnswerTemplateAnswerOptions">
 					<End Role="Parent" EntitySet="AnswerTemplates" ></End>
 					<End Role="Child"  EntitySet="AnswerTemplateOptions"></End>
 				</AssociationSet>
