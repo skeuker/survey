@@ -1,0 +1,4 @@
+<mvc:View controllerName="pnp.survey.controller.Message" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m">
+	<MessagePage id="page" title="{i18n>titleMessage}" text="{MessageModel>/sMessageText}" icon="{MessageModel>/sMessageIcon}"
+		showNavButton="false" description="{i18n>detailObjectMessagePageDescription}"></MessagePage>
+</mvc:View>

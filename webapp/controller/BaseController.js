@@ -144,6 +144,65 @@ sap.ui.define([
 
 		},
 
+		//render OData error response to detail message page
+		renderODataErrorResponseToDetailMessagePage: function (oError) {
+
+			//for exception handling
+			try {
+
+				//parse error response		
+				var oErrorText = JSON.parse(oError.responseText);
+
+				//clear master list selection state
+				this.getOwnerComponent().oListSelector.clearMasterListSelection();
+
+				//error encountered
+				this.getRouter().getTargets().display("detailObjectMessage", {
+					messageText: oErrorText.error.message.value,
+					messageType: "Error"
+				});
+
+				//set view to no longer busy
+				this.oViewModel.setProperty("/busy", false);
+
+				//exception handling
+			} catch (exception) {
+				//explicitly none
+			}
+
+		},
+
+		//render OData error response to message popover button
+		renderODataErrorResponseToMessagePopoverButton: function (oResponse) {
+
+			//for exception handling
+			try {
+
+				//format response text for display in error message details
+				var oResponseText = JSON.parse(oResponse.responseText);
+
+				//adopt error attributes into message	
+				var oMessage = {};
+				oMessage.MessageText = oResponseText.error.message.value;
+				oMessage.MessageType = "Error";
+
+				//push to messages array
+				var aMessages = [];
+				aMessages.push(oMessage);
+
+				//set message to message popover button
+				this.setEntityMessages(aMessages);
+
+				//set view to no longer busy
+				this.oViewModel.setProperty("/busy", false);
+
+				//exception handling
+			} catch (exception) {
+				//explicitly none
+			}
+
+		},
+
 		//check for and visualize errors in BatchResponses
 		hasODataBatchErrorResponse: function (aBatchResponses) {
 

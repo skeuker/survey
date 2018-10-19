@@ -20,21 +20,29 @@ sap.ui.define([
 			this._bMessageOpen = false;
 			this._sErrorText = this._oResourceBundle.getText("errorText");
 
+			//attach error handler for metadata load failure
 			this.oSurveyModel.attachMetadataFailed(function (oEvent) {
 				var oParams = oEvent.getParameters();
 				this._showServiceError(oParams.response);
 			}, this);
 
+			//attach error handler for service request error that is not handled with the application
 			this.oSurveyModel.attachRequestFailed(function (oEvent) {
+
+				//get service request failure event
 				var oParams = oEvent.getParameters();
+
 				// An entity that was not found in the service is also throwing a 404 error in oData.
 				// We already cover this case with a notFound target so we skip it here.
 				// A request that cannot be sent to the server is a technical error that we have to handle though
-				if (oParams.response.statusCode !== "404" || (oParams.response.statusCode === 404 && oParams.response.responseText.indexOf(
-						"Cannot POST") === 0)) {
+				if ((oParams.response.statusCode !== "404" && oParams.response.statusCode !== "400") || (oParams.response.statusCode === 404 &&
+						oParams.response.responseText.indexOf(
+							"Cannot POST") === 0)) {
 					this._showServiceError(oParams.response);
 				}
+
 			}, this);
+
 		},
 
 		/**

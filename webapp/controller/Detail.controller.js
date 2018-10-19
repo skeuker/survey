@@ -217,6 +217,14 @@ sap.ui.define([
 						//set view model to no longer busy
 						this.oViewModel.setProperty("/busy", false);
 
+					}.bind(this),
+
+					//error callback handler
+					error: function (oError) {
+
+						//render error to detail message page
+						this.renderODataErrorResponseToDetailMessagePage(oError);
+
 					}.bind(this)
 
 				});
