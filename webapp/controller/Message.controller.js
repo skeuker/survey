@@ -22,7 +22,7 @@ sap.ui.define([
 		_onMessageDisplayed: function (oEvent) {
 
 			//local data declaration
-			var sMessageIcon;
+			var sMessageIcon, sMessageDescription;
 
 			//adopt message text from navigation
 			var oNavData = oEvent.getParameter("data");
@@ -34,16 +34,20 @@ sap.ui.define([
 			switch (oNavData.messageType) {
 			case "Error":
 				sMessageIcon = "sap-icon://message-error";
+				sMessageDescription = this.getResourceBundle().getText("messageOopsSomethingWentWrong");
 				break;
 			case "Warning":
-				sMessageIcon = "sap-icon://message-warning"
+				sMessageIcon = "sap-icon://message-warning";
+				sMessageDescription = this.getResourceBundle().getText("messageForYourInformation");
 				break;
 			case "Information":
 				sMessageIcon = "sap-icon://message-information";
+				sMessageDescription = this.getResourceBundle().getText("messageForYourInformation");
 				break;
 			}
 
-			//set view model message icon attribute
+			//set view model message icon and description attribute
+			this.oViewModel.setProperty("/sMessageDescription", sMessageDescription);
 			this.oViewModel.setProperty("/sMessageIcon", sMessageIcon);
 
 		}

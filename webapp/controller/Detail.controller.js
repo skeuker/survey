@@ -2,8 +2,9 @@
 sap.ui.define([
 	"pnp/survey/controller/BaseController",
 	"sap/ui/model/json/JSONModel",
-	"pnp/survey/model/formatter"
-], function (BaseController, JSONModel, formatter) {
+	"pnp/survey/model/formatter",
+	"sap/ui/model/Filter"
+], function (BaseController, JSONModel, formatter, Filter) {
 	"use strict";
 
 	return BaseController.extend("pnp.survey.controller.Detail", {
@@ -70,14 +71,28 @@ sap.ui.define([
 		 */
 		onDisplay: function (oEvent) {
 
+			//local data declaration
+			var aFilters = [];
+
 			//format master detail view display
 			this.getModel("appView").setProperty("/layout", "TwoColumnsMidExpanded");
 
 			//remove all messages from the message manager
 			this.oMessageManager.removeAllMessages();
 
-			//bind detail view to selected survey
+			//get navigational input for survey display
 			var oNavData = oEvent.getParameter("data");
+
+			//create filter array for survey retrieval
+			for (var property in oNavData) {
+				aFilters.push(new Filter({
+					path: property,
+					operator: "EQ",
+					value1: oNavData[property]
+				}));
+			}
+
+			//bind detail view to selected survey
 			this.oSurveyModel.metadataLoaded().then(function () {
 
 				//construct object key for this survey
@@ -90,6 +105,9 @@ sap.ui.define([
 					urlParameters: {
 						"$expand": "toQuestions,toQuestions/toAnswers,toAnswerTemplates,toAnswerTemplates/toAnswerTemplateOptions"
 					},
+
+					//filters
+					filters: aFilters,
 
 					//success callback handler
 					success: function (oData, oResponse) {
@@ -148,6 +166,11 @@ sap.ui.define([
 
 									//for answer template of type 'Range'
 									if (oAnswerTemplate.AnswerTypeID === "Range") {
+
+										//format answer template attributes
+										oAnswerTemplate.AnswerRangeTo = Number(oAnswerTemplate.AnswerRangeTo);
+										oAnswerTemplate.AnswerRangeFrom = Number(oAnswerTemplate.AnswerRangeFrom);
+										oAnswerTemplate.AnswerRangeIncrement = Number(oAnswerTemplate.AnswerRangeIncrement);
 
 										//merge with rating previously provided
 										if (oQuestion.toAnswers) {
@@ -381,17 +404,22 @@ sap.ui.define([
 			//set view to busy
 			this.oViewModel.setProperty("/busy", true);
 
+			//cleanup of changes remaining from previous submission attempt
+			if (this.oSurveyModel.hasPendingChanges()) {
+				this.oSurveyModel.resetChanges();
+			}
+
 			//get survey being filled in
 			var oSurvey = this.getView().getBindingContext("SubmissionModel").getObject();
-
-			//Create survey key in survey OData model
-			var sSurveyKey = this.oSurveyModel.createKey("Surveys", oSurvey);
 
 			//Create or change survey depending on persistance state
 			switch (oSurvey.isPersisted) {
 
 				//survey previously persisted
 			case true:
+
+				//Create survey key in survey OData model
+				var sSurveyKey = this.oSurveyModel.createKey("Surveys", oSurvey);
 
 				//adopt current survey attributes for update
 				for (var sProperty in oSurvey) {
@@ -410,7 +438,7 @@ sap.ui.define([
 			case false:
 
 				//create entry for submission to backend
-				this.oSurveyModel.createEntry(sSurveyKey, {
+				this.oSurveyModel.createEntry("Surveys", {
 					properties: oSurvey
 				});
 
@@ -422,14 +450,22 @@ sap.ui.define([
 				//check whether all questions have been answered
 				oQuestion.toAnswers.forEach(function (oAnswer) {
 
-					//create key for each answer in survey OData model
-					var sAnswerKey = this.oSurveyModel.createKey("Answers", oAnswer);
+					/*format answer option value to string where applicable
+					  This is required for NW Gateway type compliance*/
+					if (typeof oAnswer.AnswerOptionValue !== 'string') {
+						oAnswer.AnswerOptionValue = oAnswer.AnswerOptionValue.toString();
+					}
 
 					//Create or change answer depending on persistance state
 					switch (oAnswer.isPersisted) {
 
 						//answer previously persisted
 					case true:
+
+						//create key for each answer in survey OData model
+						var sAnswerKey = this.oSurveyModel.createKey("Answers", oAnswer);
+
+						//adopt answer attribute for create
 						this.oSurveyModel.setProperty("/" + sAnswerKey + "/AnswerOptionValue", oAnswer.AnswerOptionValue);
 
 						//no further processing here
@@ -439,7 +475,7 @@ sap.ui.define([
 					case false:
 
 						//create entry for submission to backend
-						this.oSurveyModel.createEntry(sAnswerKey, {
+						this.oSurveyModel.createEntry("Answers", {
 							properties: oAnswer
 						});
 

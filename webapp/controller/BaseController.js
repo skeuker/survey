@@ -221,11 +221,9 @@ sap.ui.define([
 				//where a batchResponse is contained
 				if (oBatchResponse.response) {
 
-					//by type of HTTP ok code
-					switch (oBatchResponse.response.statusCode) {
-
-						//where HTTP ok code is 400 "Bad Request"
-					case "400":
+					//in case of errors
+					if (/^4/.test(oBatchResponse.response.statusCode) ||
+						/^5/.test(oBatchResponse.response.statusCode)) {
 
 						//interprese backend error
 						if (oBatchResponse.response.body) {
