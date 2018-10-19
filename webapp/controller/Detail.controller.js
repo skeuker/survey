@@ -511,6 +511,14 @@ sap.ui.define([
 						messageType: "Success"
 					});
 
+				}.bind(this),
+
+				//success callback function
+				error: function (oError) {
+
+					//render OData error response
+					this.renderODataErrorResponseToMessagePopoverButton(oError);
+
 				}.bind(this)
 
 			});
