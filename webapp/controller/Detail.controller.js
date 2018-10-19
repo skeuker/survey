@@ -450,7 +450,7 @@ sap.ui.define([
 				//check whether all questions have been answered
 				oQuestion.toAnswers.forEach(function (oAnswer) {
 
-					/*format answer option value to string where applicable
+					/*format answer option value to string where applicable.
 					  This is required for NW Gateway type compliance*/
 					if (typeof oAnswer.AnswerOptionValue !== 'string') {
 						oAnswer.AnswerOptionValue = oAnswer.AnswerOptionValue.toString();
@@ -499,18 +499,17 @@ sap.ui.define([
 					//set survey persisted property to update object page status
 					this.oSubmissionModel.setProperty("/isPersisted", true);
 
-					//message handling: survey submitted successfully
-					this.setEntityMessages([{
-						MessageText: this.getResourceBundle().getText("messageSurveySubmittedSuccessfully"),
-						MessageType: "Success"
-					}]);
-
-					//disable form entry
-					this.oViewModel.setProperty("/isSubmitEnabled", false);
-					this.oViewModel.setProperty("/isEditable", false);
+					//clear master list selection state
+					this.getOwnerComponent().oListSelector.clearMasterListSelection();
 
 					//set view to no longer busy
 					this.oViewModel.setProperty("/busy", false);
+
+					//message handling: successfully submitted
+					this.getRouter().getTargets().display("detailObjectMessage", {
+						messageText: this.getResourceBundle().getText("messageSurveySubmittedSuccessfully"),
+						messageType: "Success"
+					});
 
 				}.bind(this)
 

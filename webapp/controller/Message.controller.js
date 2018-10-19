@@ -32,17 +32,21 @@ sap.ui.define([
 
 			//derive message icon
 			switch (oNavData.messageType) {
+			case "Success":
+				sMessageIcon = "sap-icon://message-success";
+				sMessageDescription = this.getResourceBundle().getText("messageDescriptionProcessedSuccessfully");
+				break;
 			case "Error":
 				sMessageIcon = "sap-icon://message-error";
-				sMessageDescription = this.getResourceBundle().getText("messageOopsSomethingWentWrong");
+				sMessageDescription = this.getResourceBundle().getText("messageDescriptionOopsSomethingWentWrong");
 				break;
 			case "Warning":
 				sMessageIcon = "sap-icon://message-warning";
-				sMessageDescription = this.getResourceBundle().getText("messageForYourInformation");
+				sMessageDescription = this.getResourceBundle().getText("messageDescriptionForYourInformation");
 				break;
 			case "Information":
 				sMessageIcon = "sap-icon://message-information";
-				sMessageDescription = this.getResourceBundle().getText("messageForYourInformation");
+				sMessageDescription = this.getResourceBundle().getText("messageDescriptionForYourInformation");
 				break;
 			}
 
