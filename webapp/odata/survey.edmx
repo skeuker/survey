@@ -31,9 +31,10 @@
 					<PropertyRef  Name="SurveyID"/>
 				</Key>
 				<Property Name="SurveyID" Type="Edm.String" Nullable="false" sap:label="Survey"></Property>
-				<Property Name="ParticipantID" Type="Edm.String" Nullable="true"></Property>
+				<Property Name="ParticipantID" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="AnchorID" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="TopicID" Type="Edm.String" Nullable="false"></Property>
+				<Property Name="TopicTypeID" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="TopicText" Type="Edm.String" Nullable="true"></Property>
 				<Property Name="AnchorText" Type="Edm.String" Nullable="true"></Property>
 				<Property Name="isPersisted" Type="Edm.Boolean" Nullable="true"></Property>

@@ -5,7 +5,7 @@
 		</semantic:titleHeading>
 		<semantic:content>
 			<List id="list" width="auto" class="sapFDynamicPageAlignContent" busyIndicatorDelay="{masterView>/delay}"
-				noDataText="{masterView>/noDataText}" mode="{= ${device>/system/phone} ? 'None' : 'SingleSelectMaster'}" growing="true"
+				noDataText="{masterView>/noDataText}" growing="true" mode="{= ${device>/system/phone} ? 'None' : 'SingleSelectMaster'}"
 				growingScrollToLoad="true" updateFinished="onUpdateFinished" selectionChange="onSelectionChange">
 				<headerToolbar>
 					<OverflowToolbar>

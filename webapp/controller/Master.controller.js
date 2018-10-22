@@ -68,6 +68,10 @@ sap.ui.define([
 			//register event handler for view display
 			this.getRouter().getTarget("master").attachDisplay(this.onDisplay, this);
 			this.getRouter().attachBypassed(this.onBypassed, this);
+
+			//keep track that for now master controller is leading view controller
+			this.getOwnerComponent().oLeadingViewController = this;
+
 		},
 
 		/* =========================================================== */
@@ -276,7 +280,7 @@ sap.ui.define([
 					press: this.onSelectionChange,
 					title: "{SurveyModel>TopicID}",
 					description: "{SurveyModel>TopicText}",
-					info: "{= ${SurveyModel>isPersisted} === true? 'Submitted' : 'to submit' }"
+					info: "{= ${SurveyModel>isPersisted} === true? ${i18n>textSubmitted} : ${i18n>textToSubmit} }"
 				})
 
 			});
@@ -294,12 +298,16 @@ sap.ui.define([
 			// set the layout property of FCL control to show two columns
 			this.getModel("appView").setProperty("/layout", "TwoColumnsMidExpanded");
 
+			//get requested survey 
+			var oSurvey = oItem.getBindingContext("SurveyModel").getObject();
+
 			//display detail corresponding to the selected survey
 			this.getRouter().getTargets().display("detail", {
-				SurveyID: oItem.getBindingContext("SurveyModel").getProperty("SurveyID"),
-				AnchorID: oItem.getBindingContext("SurveyModel").getProperty("AnchorID"),
-				TopicID: oItem.getBindingContext("SurveyModel").getProperty("TopicID"),
-				ParticipantID: oItem.getBindingContext("SurveyModel").getProperty("ParticipantID")
+				SurveyID: oSurvey.SurveyID,
+				AnchorID: oSurvey.AnchorID,
+				TopicID: oSurvey.TopicID,
+				TopicTypeID: oSurvey.TopicTypeID,
+				ParticipantID: oSurvey.ParticipantID
 			});
 
 		},
@@ -345,6 +353,14 @@ sap.ui.define([
 			var oViewModel = this.getModel("masterView");
 			oViewModel.setProperty("/isFilterBarVisible", (this._oListFilterState.aFilter.length > 0));
 			oViewModel.setProperty("/filterBarLabel", this.getResourceBundle().getText("masterFilterBarText", [sFilterBarText]));
+		},
+
+		//controller decision whether to handle an OData service error
+		isHandlingServiceError: function (sStatusCode) {
+
+			//all OData service error handling delegated to ErrorHandler.js
+			return false;
+
 		}
 
 	});

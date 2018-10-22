@@ -38,7 +38,12 @@ sap.ui.define([
 			this.oMessageManager = sap.ui.getCore().getMessageManager();
 			this.oMessageManager.registerMessageProcessor(this.oMessageProcessor);
 
+			//keep track that from now on detail controller is leading view controller
+			this.getOwnerComponent().oLeadingViewController = this;
+
+			//once-off preparation for first view display
 			this.getOwnerComponent().getModel("SurveyModel").metadataLoaded().then(this._onMetadataLoaded.bind(this));
+
 		},
 
 		/* =========================================================== */
@@ -563,6 +568,14 @@ sap.ui.define([
 
 			//set focus on requested question
 			$(sPageID).scrollTop(10);
+
+		},
+
+		//controller decision whether to handle an OData service error
+		isHandlingServiceError: function (sStatusCode) {
+
+			//all OData service errors handled in this controller
+			return true;
 
 		}
 

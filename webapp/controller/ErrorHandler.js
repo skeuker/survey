@@ -14,8 +14,10 @@ sap.ui.define([
 		 * @alias pnp.survey.controller.ErrorHandler
 		 */
 		constructor: function (oComponent) {
+
+			//set instance attributes
 			this._oResourceBundle = oComponent.getModel("i18n").getResourceBundle();
-			this._oComponent = oComponent;
+			this.oComponent = oComponent;
 			this.oSurveyModel = oComponent.getModel("SurveyModel");
 			this._bMessageOpen = false;
 			this._sErrorText = this._oResourceBundle.getText("errorText");
@@ -26,16 +28,20 @@ sap.ui.define([
 				this._showServiceError(oParams.response);
 			}, this);
 
-			//attach error handler for service request error that is not handled with the application
+			//attach error handler for unhandled OData service request errors
 			this.oSurveyModel.attachRequestFailed(function (oEvent) {
 
 				//get service request failure event
 				var oParams = oEvent.getParameters();
 
-				/*Render all errors that are not classified as 'client errors'.
-				  client errors are handled in controller callback functions*/
-				if (!/^4/.test(oParams.response.statusCode) &&
-					!/^5/.test(oParams.response.statusCode)) {
+				//decide whether to handle this error here
+				var bHandledInViewController = false;
+				if (this.oComponent.oLeadingViewController) {
+					bHandledInViewController = this.oComponent.oLeadingViewController.isHandlingServiceError(oParams.response.statusCode);
+				}
+
+				//Render all errors not handled in view controllers
+				if (!bHandledInViewController) {
 					this._showServiceError(oParams.response);
 				}
 
@@ -58,7 +64,7 @@ sap.ui.define([
 				this._sErrorText, {
 					id: "serviceErrorMessageBox",
 					details: sDetails,
-					styleClass: this._oComponent.getContentDensityClass(),
+					styleClass: this.oComponent.getContentDensityClass(),
 					actions: [MessageBox.Action.CLOSE],
 					onClose: function () {
 						this._bMessageOpen = false;

@@ -13,8 +13,8 @@
 			<FlexBox alignItems="Start" justifyContent="SpaceBetween">
 				<items>
 					<ObjectAttribute text="{SubmissionModel>/AnchorText}"/>
-					<ObjectStatus text="{= 'Survey status: ' + ( ${SubmissionModel>/isPersisted}? 'Submitted' : 'to submit' ) }"
-						state="{= ${SubmissionModel>/isPersisted}? 'Success' : 'Warning' }"/>
+					<ObjectStatus text="{= 'Survey status: ' + ( ${SubmissionModel>/isPersisted}? ${i18n>textSubmitted} : ${i18n>textToSubmit} ) }"
+						state="{= ${SubmissionModel>/isPersisted}? 'Success' : 'None' }"/>
 				</items>
 			</FlexBox>
 		</semantic:headerContent>
