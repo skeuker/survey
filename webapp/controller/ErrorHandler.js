@@ -16,16 +16,16 @@ sap.ui.define([
 		constructor: function (oComponent) {
 
 			//set instance attributes
-			this._oResourceBundle = oComponent.getModel("i18n").getResourceBundle();
+			this.oResourceBundle = oComponent.getModel("i18n").getResourceBundle();
 			this.oComponent = oComponent;
 			this.oSurveyModel = oComponent.getModel("SurveyModel");
 			this._bMessageOpen = false;
-			this._sErrorText = this._oResourceBundle.getText("errorText");
+			this._sErrorText = this.oResourceBundle.getText("messageODataError");
 
 			//attach error handler for metadata load failure
 			this.oSurveyModel.attachMetadataFailed(function (oEvent) {
 				var oParams = oEvent.getParameters();
-				this._showServiceError(oParams.response);
+				this.showServiceError(oParams.response);
 			}, this);
 
 			//attach error handler for unhandled OData service request errors
@@ -34,36 +34,90 @@ sap.ui.define([
 				//get service request failure event
 				var oParams = oEvent.getParameters();
 
-				//decide whether to handle this error here
-				var bHandledInViewController = false;
+				//query if leading view controller delegates error handling
+				var bErrorHandlingIsDelegated;
 				if (this.oComponent.oLeadingViewController) {
-					bHandledInViewController = this.oComponent.oLeadingViewController.isHandlingServiceError(oParams.response.statusCode);
+					bErrorHandlingIsDelegated = this.oComponent.oLeadingViewController.delegatesODataErrorHandling(oParams.response.statusCode);
 				}
 
-				//Render all errors not handled in view controllers
-				if (!bHandledInViewController) {
-					this._showServiceError(oParams.response);
+				//Handle all errors delegated by view controllers
+				if (bErrorHandlingIsDelegated) {
+					this.showServiceError(oParams.response);
 				}
 
 			}, this);
 
 		},
 
+		//get message text from OData error response
+		getODataErrorResponseMessageText: function (oError) {
+
+			//called by OData model RequestFailed event
+			var oResourceBundle = this.oResourceBundle;
+
+			//called by view controller error handling
+			if (!oResourceBundle) {
+				oResourceBundle = this.getResourceBundle();
+			}
+
+			//local data declaration
+			var sMessageText = oResourceBundle.getText("messageAnErrorOccured");
+
+			//processing by response status code
+			switch (oError.statusCode) {
+
+				//socket timeout
+			case 504:
+
+				//set fixed message text
+				sMessageText = oResourceBundle.getText("messageSocketTimeOutOccured");
+
+				break;
+
+				//all others
+			default:
+
+				//for exception handling
+				try {
+
+					//parse error response		
+					var oErrorText = JSON.parse(oError.responseText);
+					sMessageText = oErrorText.error.message.value;
+
+					//exception handling
+				} catch (exception) {
+					//explicitly none
+				}
+
+			}
+
+			//feedback to caller
+			return sMessageText;
+
+		},
+
 		/**
 		 * Shows a {@link sap.m.MessageBox} when a service call has failed.
 		 * Only the first error message will be display.
-		 * @param {string} sDetails a technical error to be displayed on request
 		 * @private
 		 */
-		_showServiceError: function (sDetails) {
+		showServiceError: function (oError) {
+
+			//no further error message box where one is already open
 			if (this._bMessageOpen) {
 				return;
 			}
+
+			//keep track that a message box is about to open
 			this._bMessageOpen = true;
+
+			//open error message box
 			MessageBox.error(
 				this._sErrorText, {
 					id: "serviceErrorMessageBox",
-					details: sDetails,
+					icon: sap.m.MessageBox.Icon.Error,
+					title: this.oResourceBundle.getText("titleServiceErrorMessageBox"),
+					details: this.getODataErrorResponseMessageText(oError),
 					styleClass: this.oComponent.getContentDensityClass(),
 					actions: [MessageBox.Action.CLOSE],
 					onClose: function () {

@@ -1,8 +1,9 @@
 /*global history */
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
-	"sap/ui/core/routing/History"
-], function (Controller, History) {
+	"sap/ui/core/routing/History",
+	"pnp/survey/controller/ErrorHandler"
+], function (Controller, History, ErrorHandler) {
 	"use strict";
 
 	return Controller.extend("pnp.survey.controller.BaseController", {
@@ -144,45 +145,6 @@ sap.ui.define([
 
 		},
 
-		//get message text from OData error response
-		getODataErrorResponseMessageText: function (oError) {
-
-			//local data declaration
-			var sMessageText = this.getResourceBundle().getText("messageAnErrorOccured");
-
-			//processing by response status code
-			switch (oError.statusCode) {
-
-				//socket timeout
-			case 504:
-
-				//set fixed message text
-				sMessageText = this.getResourceBundle().getText("messageSocketTimeOutOccured");
-
-				break;
-
-				//all others
-			default:
-
-				//for exception handling
-				try {
-
-					//parse error response		
-					var oErrorText = JSON.parse(oError.responseText);
-					sMessageText = oErrorText.error.message.value;
-
-					//exception handling
-				} catch (exception) {
-					//explicitly none
-				}
-
-			}
-
-			//feedback to caller
-			return sMessageText;
-
-		},
-
 		//render OData error response to detail message page
 		renderODataErrorResponseToDetailMessagePage: function (oError) {
 
@@ -192,9 +154,12 @@ sap.ui.define([
 			//clear master list selection state
 			this.getOwnerComponent().oListSelector.clearMasterListSelection();
 
+			//get message text
+			var sMessageText = ErrorHandler.prototype.getODataErrorResponseMessageText.call(this, oError);
+
 			//error encountered
 			this.getRouter().getTargets().display("detailObjectMessage", {
-				messageText: this.getODataErrorResponseMessageText(oError),
+				messageText: sMessageText,
 				messageType: "Error"
 			});
 
@@ -203,9 +168,12 @@ sap.ui.define([
 		//render OData error response to message popover button
 		renderODataErrorResponseToMessagePopoverButton: function (oError) {
 
+			//get message text
+			var sMessageText = ErrorHandler.prototype.getODataErrorResponseMessageText.call(this, oError);
+
 			//set message to message popover button
 			this.setEntityMessages([{
-				MessageText: this.getODataErrorResponseMessageText(oError),
+				MessageText: sMessageText,
 				MessageType: "Error"
 			}]);
 

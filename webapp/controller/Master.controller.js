@@ -355,11 +355,11 @@ sap.ui.define([
 			oViewModel.setProperty("/filterBarLabel", this.getResourceBundle().getText("masterFilterBarText", [sFilterBarText]));
 		},
 
-		//controller decision whether to handle an OData service error
-		isHandlingServiceError: function (sStatusCode) {
+		//controller decision whether to delegate OData service error handling
+		delegatesODataErrorHandling: function (sStatusCode) {
 
 			//all OData service error handling delegated to ErrorHandler.js
-			return false;
+			return true;
 
 		}
 

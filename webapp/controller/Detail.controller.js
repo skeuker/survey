@@ -572,10 +572,10 @@ sap.ui.define([
 		},
 
 		//controller decision whether to handle an OData service error
-		isHandlingServiceError: function (sStatusCode) {
+		delegatesODataErrorHandling: function (sStatusCode) {
 
 			//all OData service errors handled in this controller
-			return true;
+			return false;
 
 		}
 
