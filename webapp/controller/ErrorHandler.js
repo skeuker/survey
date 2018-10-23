@@ -86,7 +86,10 @@ sap.ui.define([
 
 					//exception handling
 				} catch (exception) {
-					//explicitly none
+
+					//fallback to full error where not parsed
+					sMessageText = oError.responseText;
+
 				}
 
 			}
