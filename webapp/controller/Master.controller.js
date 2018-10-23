@@ -375,12 +375,12 @@ sap.ui.define([
 		createMasterListItem: function (sId, oBindingContext) {
 
 			//local data declaration
-			var sListItemInfo;
+			var sListItemInfo, sListItemDescription;
 
 			//Get context to identify survey attributes
 			var oSurvey = oBindingContext.getObject();
 
-			//Built standard list item info textual description
+			//Build list item info textual description
 			if (oSurvey.isPersisted) {
 
 				//survey previously submitted
@@ -402,11 +402,17 @@ sap.ui.define([
 				}
 			}
 
+			//Build list item description
+			sListItemDescription = oSurvey.TopicText;
+			if (oSurvey.isSelfSurvey) {
+				sListItemDescription = this.getResourceBundle().getText("textSelfAssessment");
+			}
+
 			//create standard list item with this Binding
 			return new StandardListItem({
 				type: "Navigation",
 				title: "{SurveyModel>TopicID}",
-				description: "{SurveyModel>TopicText}",
+				description: sListItemDescription,
 				info: sListItemInfo
 			});
 
