@@ -7,7 +7,10 @@
 	"isEditable": true,
 	"AnchorText": "Work request 67256: PO BAdI for free item discount at delivery time",
 	"isPersisted": true,
-	"TopicTypeID": "FunctionalConsultant"
+	"TopicTypeID": "FunctionalConsultant",
+	"isOptional": false,
+	"isSelfSurvey": false,
+	"AnchorTypeID": "WrkReq"
 }, {
 	"SurveyID": "2",
 	"AnchorID": "12756",
@@ -17,7 +20,10 @@
 	"isEditable": true,
 	"AnchorText": "Work request 67256: PO BAdI for free item discount at delivery time",
 	"isPersisted": false,
-	"TopicTypeID": "ProjectManager"
+	"TopicTypeID": "ProjectManager",
+	"isOptional": true,
+	"isSelfSurvey": false,
+	"AnchorTypeID": "WrkReq"
 }, {
 	"SurveyID": "3",
 	"AnchorID": "12756",
@@ -27,5 +33,8 @@
 	"isEditable": true,
 	"AnchorText": "Work request 67256: PO BAdI for free item discount at delivery time",
 	"isPersisted": false,
-	"TopicTypeID": "SoftwareDeveloper"
+	"TopicTypeID": "SoftwareDeveloper",
+	"isSelfSurvey": true,
+	"isOptional": false,
+	"AnchorTypeID": "WrkReq"
 }]

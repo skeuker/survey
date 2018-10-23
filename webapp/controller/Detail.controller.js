@@ -125,11 +125,14 @@ sap.ui.define([
 							SurveyID: oData.SurveyID,
 							TopicID: oData.TopicID,
 							AnchorID: oData.AnchorID,
+							AnchorTypeID: oData.AnchorTypeID,
 							ParticipantID: oData.ParticipantID,
 							TopicText: oData.TopicText,
 							AnchorText: oData.AnchorText,
 							isEditable: oData.isEditable,
-							isPersisted: oData.isPersisted
+							isPersisted: oData.isPersisted,
+							iOptional: oData.isOptional,
+							isSelfSurvey: oData.isSelfSurvey
 						};
 
 						//questions are available

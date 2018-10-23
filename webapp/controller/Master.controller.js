@@ -184,14 +184,19 @@ sap.ui.define([
 		 * @public
 		 */
 		onSelectionChange: function (oEvent) {
+
+			//local data declaration
 			var oList = oEvent.getSource(),
 				bSelected = oEvent.getParameter("selected");
 
 			// skip navigation when deselecting an item in multi selection mode
 			if (!(oList.getMode() === "MultiSelect" && !bSelected)) {
+
 				// get the list item, either from the listItem parameter or from the event's source itself (will depend on the device-dependent mode).
-				this._showDetail(oEvent.getParameter("listItem") || oEvent.getSource());
+				this.showSurveyDetail(oEvent.getParameter("listItem") || oEvent.getSource());
+
 			}
+
 		},
 
 		/**
@@ -231,6 +236,7 @@ sap.ui.define([
 		/* begin: internal methods                                     */
 		/* =========================================================== */
 
+		//create view model to control UI behaviour
 		_createViewModel: function () {
 			return new JSONModel({
 				isFilterBarVisible: false,
@@ -249,10 +255,10 @@ sap.ui.define([
 			//Set the layout property of the FCL control to 'OneColumn'
 			this.getModel("appView").setProperty("/layout", "OneColumn");
 
-			//get requested AnchorID
-			var sAnchorID = this.oViewModel.getProperty("/sWrkreqid");
-			if (sAnchorID === null) {
-				sAnchorID = "";
+			//get requested AnchorID of type work request
+			if (this.oViewModel.getProperty("/sWrkreqid")) {
+				var sAnchorID = this.oViewModel.getProperty("/sWrkreqid");
+				var sAnchorTypeID = "WrkReq";
 			}
 
 			//bind master list 'items' aggregation to OData content
@@ -262,11 +268,18 @@ sap.ui.define([
 				path: "SurveyModel>/Surveys",
 
 				//filter by survey anchor
-				filters: [new Filter({
-					path: "AnchorID",
-					operator: 'EQ',
-					value1: sAnchorID
-				})],
+				filters: [
+					new Filter({
+						path: "AnchorID",
+						operator: 'EQ',
+						value1: sAnchorID
+					}),
+					new Filter({
+						path: "AnchorTypeID",
+						operator: 'EQ',
+						value1: sAnchorTypeID
+					})
+				],
 
 				//sorter for result set
 				sorter: new Sorter('TopicID', false),
@@ -274,14 +287,8 @@ sap.ui.define([
 				//group header factory
 				groupHeaderFactory: this.createGroupHeader,
 
-				//UI control template
-				template: new StandardListItem({
-					type: "Navigation",
-					press: this.onSelectionChange,
-					title: "{SurveyModel>TopicID}",
-					description: "{SurveyModel>TopicText}",
-					info: "{= ${SurveyModel>isPersisted} === true? ${i18n>textSubmitted} : ${i18n>textToSubmit} }"
-				})
+				//factory function
+				factory: this.createMasterListItem.bind(this)
 
 			});
 
@@ -293,7 +300,7 @@ sap.ui.define([
 		 * @param {sap.m.ObjectListItem} oItem selected Item
 		 * @private
 		 */
-		_showDetail: function (oItem) {
+		showSurveyDetail: function (oItem) {
 
 			// set the layout property of FCL control to show two columns
 			this.getModel("appView").setProperty("/layout", "TwoColumnsMidExpanded");
@@ -305,6 +312,7 @@ sap.ui.define([
 			this.getRouter().getTargets().display("detail", {
 				SurveyID: oSurvey.SurveyID,
 				AnchorID: oSurvey.AnchorID,
+				AnchorTypeID: oSurvey.AnchorTypeID,
 				TopicID: oSurvey.TopicID,
 				TopicTypeID: oSurvey.TopicTypeID,
 				ParticipantID: oSurvey.ParticipantID
@@ -360,6 +368,47 @@ sap.ui.define([
 
 			//all OData service error handling delegated to ErrorHandler.js
 			return true;
+
+		},
+
+		//create master list item
+		createMasterListItem: function (sId, oBindingContext) {
+
+			//local data declaration
+			var sListItemInfo;
+
+			//Get context to identify survey attributes
+			var oSurvey = oBindingContext.getObject();
+
+			//Built standard list item info textual description
+			if (oSurvey.isPersisted) {
+
+				//survey previously submitted
+				sListItemInfo = this.getResourceBundle().getText("textSubmitted");
+
+			} else {
+
+				//survey is required
+				if (!oSurvey.isOptional) {
+
+					//survey to be submitted
+					sListItemInfo = this.getResourceBundle().getText("textToSubmit");
+
+				} else {
+
+					//survey is optional
+					sListItemInfo = this.getResourceBundle().getText("textOptional");
+
+				}
+			}
+
+			//create standard list item with this Binding
+			return new StandardListItem({
+				type: "Navigation",
+				title: "{SurveyModel>TopicID}",
+				description: "{SurveyModel>TopicText}",
+				info: sListItemInfo
+			});
 
 		}
 

@@ -33,12 +33,15 @@
 				<Property Name="SurveyID" Type="Edm.String" Nullable="false" sap:label="Survey"></Property>
 				<Property Name="ParticipantID" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="AnchorID" Type="Edm.String" Nullable="false"></Property>
+				<Property Name="AnchorTypeID" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="TopicID" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="TopicTypeID" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="TopicText" Type="Edm.String" Nullable="true"></Property>
 				<Property Name="AnchorText" Type="Edm.String" Nullable="true"></Property>
 				<Property Name="isPersisted" Type="Edm.Boolean" Nullable="true"></Property>
 				<Property Name="isEditable" Type="Edm.Boolean" Nullable="true"></Property>
+				<Property Name="isOptional" Type="Edm.Boolean" Nullable="true"></Property>
+				<Property Name="isSelfSurvey" Type="Edm.Boolean" Nullable="true"></Property>
 				<NavigationProperty Name="toQuestions" Relationship="pnp.SurveyQuestions" ToRole="Child" FromRole="Parent"></NavigationProperty>
 				<NavigationProperty Name="toAnswerTemplates" Relationship="pnp.SurveyAnswerTemplates" ToRole="Child" FromRole="Parent"></NavigationProperty>
 			</EntityType>
