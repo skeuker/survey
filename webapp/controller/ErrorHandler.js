@@ -19,7 +19,7 @@ sap.ui.define([
 			this.oResourceBundle = oComponent.getModel("i18n").getResourceBundle();
 			this.oComponent = oComponent;
 			this.oSurveyModel = oComponent.getModel("SurveyModel");
-			this._bMessageOpen = false;
+			this.bMessageBoxOpen = false;
 			this._sErrorText = this.oResourceBundle.getText("messageODataError");
 
 			//attach error handler for metadata load failure
@@ -107,16 +107,21 @@ sap.ui.define([
 		showServiceError: function (oError) {
 
 			//no further error message box where one is already open
-			if (this._bMessageOpen) {
+			if (this.bMessageBoxOpen) {
 				return;
 			}
 
 			//keep track that a message box is about to open
-			this._bMessageOpen = true;
+			this.bMessageBoxOpen = true;
 
 			//open error message box
 			MessageBox.error(
-				this._sErrorText, {
+
+				//message box text
+				this._sErrorText,
+
+				//message box parameters
+				{
 					id: "serviceErrorMessageBox",
 					icon: sap.m.MessageBox.Icon.Error,
 					title: this.oResourceBundle.getText("titleServiceErrorMessageBox"),
@@ -124,9 +129,10 @@ sap.ui.define([
 					styleClass: this.oComponent.getContentDensityClass(),
 					actions: [MessageBox.Action.CLOSE],
 					onClose: function () {
-						this._bMessageOpen = false;
+						this.bMessageBoxOpen = false;
 					}.bind(this)
 				}
+
 			);
 		}
 
