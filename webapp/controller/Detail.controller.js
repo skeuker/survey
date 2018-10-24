@@ -124,6 +124,7 @@ sap.ui.define([
 						var oSurvey = {
 							SurveyID: oData.SurveyID,
 							TopicID: oData.TopicID,
+							TopicTypeID: oData.TopicTypeID,
 							AnchorID: oData.AnchorID,
 							AnchorTypeID: oData.AnchorTypeID,
 							ParticipantID: oData.ParticipantID,
@@ -156,9 +157,6 @@ sap.ui.define([
 
 						//construct answers for each question
 						oSurvey.toQuestions.forEach(function (oQuestion) {
-
-							//local data declaration
-							var iAnswerID = 0;
 
 							//do question numbering
 							oQuestion.QuestionNumber = ++iQuestionNumber;
@@ -205,7 +203,12 @@ sap.ui.define([
 											oQuestion.toAnswers = [{
 												SurveyID: oSurvey.SurveyID,
 												QuestionID: oQuestion.QuestionID,
-												AnswerID: ++iAnswerID,
+												AnswerID: this.getUUID(),
+												AnchorID: oSurvey.AnchorID,
+												AnchorTypeID: oSurvey.AnchorTypeID,
+												TopicID: oSurvey.TopicID,
+												TopicTypeID: oSurvey.TopicTypeID,
+												ParticipantID: oSurvey.ParticipantID,
 												AnswerOptionValue: null,
 												isPersisted: false
 											}];
@@ -216,9 +219,9 @@ sap.ui.define([
 
 								}
 
-							});
+							}.bind(this));
 
-						});
+						}.bind(this));
 
 						//set model to view
 						this.oSubmissionModel = new JSONModel(oSurvey);
@@ -419,38 +422,6 @@ sap.ui.define([
 
 			//get survey being filled in
 			var oSurvey = this.getView().getBindingContext("SubmissionModel").getObject();
-
-			//Create or change survey depending on persistance state
-			switch (oSurvey.isPersisted) {
-
-				//survey previously persisted
-			case true:
-
-				//Create survey key in survey OData model
-				var sSurveyKey = this.oSurveyModel.createKey("Surveys", oSurvey);
-
-				//adopt current survey attributes for update
-				for (var sProperty in oSurvey) {
-
-					//for each non-key survey attribute
-					if (sProperty !== "SurveyID") {
-						this.oSurveyModel.setProperty("/" + sSurveyKey + "/" + sProperty, oSurvey[sProperty]);
-					}
-
-				}
-
-				//no further processing here
-				break;
-
-				//survey not previously persisted
-			case false:
-
-				//create entry for submission to backend
-				this.oSurveyModel.createEntry("Surveys", {
-					properties: oSurvey
-				});
-
-			}
 
 			//for each question in this survey
 			oSurvey.toQuestions.forEach(function (oQuestion) {

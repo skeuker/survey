@@ -2,8 +2,9 @@
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/core/routing/History",
-	"pnp/survey/controller/ErrorHandler"
-], function (Controller, History, ErrorHandler) {
+	"pnp/survey/controller/ErrorHandler",
+	"pnp/survey/util/uuid"
+], function (Controller, History, ErrorHandler, uuid) {
 	"use strict";
 
 	return Controller.extend("pnp.survey.controller.BaseController", {
@@ -255,6 +256,19 @@ sap.ui.define([
 
 			//feedback to caller: no errors occured
 			return false;
+
+		},
+
+		/**
+		 * Gets a UUID as a unique ID at runtime formatted
+		 * in such way that it is acceptable as SAP GUID
+		 * @public
+		 */
+		getUUID: function () {
+
+			/*return version1 UUID, removing formatting hyphens, 
+			converting to upper case to match a SAP GUID*/
+			return window.uuid.v1().replace(/-/g, "").toUpperCase();
 
 		}
 
