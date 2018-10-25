@@ -79,9 +79,6 @@ sap.ui.define([
 			//local data declaration
 			var aFilters = [];
 
-			//format master detail view display
-			this.getModel("appView").setProperty("/layout", "TwoColumnsMidExpanded");
-
 			//remove all messages from the message manager
 			this.oMessageManager.removeAllMessages();
 
@@ -99,6 +96,9 @@ sap.ui.define([
 
 			//bind detail view to selected survey
 			this.oSurveyModel.metadataLoaded().then(function () {
+
+				//set view model to busy
+				this.oViewModel.setProperty("/busy", true);
 
 				//construct object key for this survey
 				var sSurveyKey = this.oSurveyModel.createKey("Surveys", oNavData);
@@ -190,6 +190,7 @@ sap.ui.define([
 												//format answers
 												oQuestion.toAnswers.forEach(function (oAnswer) {
 													oAnswer.AnswerOptionValue = Number(oAnswer.AnswerOptionValue);
+													oAnswer.bGiven = true;
 												});
 
 											}
@@ -247,6 +248,9 @@ sap.ui.define([
 							}]);
 
 						}
+
+						//set the layout property of flexible column layout control to show two columns
+						this.getModel("appView").setProperty("/layout", "TwoColumnsMidExpanded");
 
 						//set view model to no longer busy
 						this.oViewModel.setProperty("/busy", false);
@@ -326,6 +330,7 @@ sap.ui.define([
 
 			//return to full screen master display
 			this.getModel("appView").setProperty("/actionButtonsInfo/midColumn/fullScreen", false);
+
 			// No item should be selected on master after detail page is closed
 			this.getOwnerComponent().oListSelector.clearMasterListSelection();
 			this.getRouter().getTarget("master").display();
@@ -336,16 +341,26 @@ sap.ui.define([
 		 * Toggle between full and non full screen mode.
 		 */
 		toggleFullScreen: function () {
+
+			//get state of whether flexible layout control is in fullscreen 
 			var bFullScreen = this.getModel("appView").getProperty("/actionButtonsInfo/midColumn/fullScreen");
+
+			//toggle fullscreen button according to current state
 			this.getModel("appView").setProperty("/actionButtonsInfo/midColumn/fullScreen", !bFullScreen);
+
+			//toggle view layout
 			if (!bFullScreen) {
+
 				// store current layout and go full screen
 				this.getModel("appView").setProperty("/previousLayout", this.getModel("appView").getProperty("/layout"));
 				this.getModel("appView").setProperty("/layout", "MidColumnFullScreen");
+
+				// reset to previous layout				
 			} else {
-				// reset to previous layout
+
 				this.getModel("appView").setProperty("/layout", this.getModel("appView").getProperty("/previousLayout"));
 			}
+
 		},
 
 		//on press show legend
@@ -378,6 +393,11 @@ sap.ui.define([
 			//keep track that answer option value was set
 			var oQuestion = oEvent.getSource().getBindingContext("SubmissionModel").getObject();
 
+			//flag this question as answered
+			oQuestion.toAnswers.forEach(function (oAnswer) {
+				oAnswer.bGiven = true;
+			});
+
 			//set enabled state of submit button
 			this.oViewModel.setProperty("/isSubmitEnabled", this.isSurveyAnsweredCompletely());
 
@@ -397,7 +417,7 @@ sap.ui.define([
 
 				//check whether all questions have been answered
 				oQuestion.toAnswers.forEach(function (oAnswer) {
-					if (oAnswer.AnswerOptionValue === null) {
+					if (!oAnswer.bGiven) {
 						bAllQuestionsAnswered = false;
 					}
 				});
@@ -445,13 +465,20 @@ sap.ui.define([
 						var sAnswerKey = this.oSurveyModel.createKey("Answers", oAnswer);
 
 						//adopt answer attribute for create
-						this.oSurveyModel.setProperty("/" + sAnswerKey + "/AnswerOptionValue", oAnswer.AnswerOptionValue);
+						for (var sProperty in oAnswer) {
+							if (sProperty !== "__metadata" && sProperty !== "bGiven") {
+								this.oSurveyModel.setProperty("/" + sAnswerKey + "/" + sProperty, oAnswer[sProperty]);
+							}
+						}
 
 						//no further processing here
 						break;
 
 						//answer not previously persisted
 					case false:
+
+						//delete client answer entity attribute 'bGiven'
+						delete oAnswer.bGiven;
 
 						//create entry for submission to backend
 						this.oSurveyModel.createEntry("Answers", {
@@ -480,6 +507,7 @@ sap.ui.define([
 
 					//clear master list selection state
 					this.getOwnerComponent().oListSelector.clearMasterListSelection();
+					this.getOwnerComponent().oListSelector.refreshMasterListBinding();
 
 					//set view to no longer busy
 					this.oViewModel.setProperty("/busy", false);

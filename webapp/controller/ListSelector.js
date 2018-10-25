@@ -13,7 +13,7 @@ sap.ui.define([
 		 * @alias pnp.survey.controller.ListSelector
 		 */
 
-		constructor : function () {
+		constructor: function () {
 			this._oWhenListHasBeenSet = new Promise(function (fnResolveListHasBeenSet) {
 				this._fnResolveListHasBeenSet = fnResolveListHasBeenSet;
 			}.bind(this));
@@ -27,12 +27,12 @@ sap.ui.define([
 							function () {
 								if (this._oList.getItems().length) {
 									fnResolve({
-										list : oList
+										list: oList
 									});
 								} else {
 									// No items in the list
 									fnReject({
-										list : oList
+										list: oList
 									});
 								}
 							}.bind(this)
@@ -47,7 +47,7 @@ sap.ui.define([
 		 * @param {sap.m.List} oList The list all the select functions will be invoked on.
 		 * @public
 		 */
-		setBoundMasterList : function (oList) {
+		setBoundMasterList: function (oList) {
 			this._oList = oList;
 			this._fnResolveListHasBeenSet(oList);
 		},
@@ -58,7 +58,7 @@ sap.ui.define([
 		 * @param {string} sBindingPath the binding path matching the binding path of a list item
 		 * @public
 		 */
-		selectAListItem : function (sBindingPath) {
+		selectAListItem: function (sBindingPath) {
 
 			this.oWhenListLoadingIsDone.then(
 				function () {
@@ -84,7 +84,8 @@ sap.ui.define([
 					});
 				}.bind(this),
 				function () {
-					jQuery.sap.log.warning("Could not select the list item with the path" + sBindingPath + " because the list encountered an error or had no items");
+					jQuery.sap.log.warning("Could not select the list item with the path" + sBindingPath +
+						" because the list encountered an error or had no items");
 				}
 			);
 		},
@@ -94,11 +95,25 @@ sap.ui.define([
 		 * Does not trigger 'selectionChange' event on master list, though.
 		 * @public
 		 */
-		clearMasterListSelection : function () {
+		clearMasterListSelection: function () {
 			//use promise to make sure that 'this._oList' is available
 			this._oWhenListHasBeenSet.then(function () {
 				this._oList.removeSelections(true);
 			}.bind(this));
+		},
+
+		/**
+		 * Removes all selections from master list.
+		 * Does not trigger 'selectionChange' event on master list, though.
+		 * @public
+		 */
+		refreshMasterListBinding: function () {
+
+			//refresh binding of 'items' aggregation
+			this._oList.getBinding("items").refresh(true);
+
 		}
+
 	});
+
 });

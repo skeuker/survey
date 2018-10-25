@@ -53,6 +53,7 @@ sap.ui.define([
 
 			}.bind(this));
 
+			//keep track of master list for access from detail controller
 			this.getView().addEventDelegate({
 				onBeforeFirstShow: function () {
 					this.getOwnerComponent().oListSelector.setBoundMasterList(oList);
@@ -301,9 +302,6 @@ sap.ui.define([
 		 * @private
 		 */
 		showSurveyDetail: function (oItem) {
-
-			// set the layout property of FCL control to show two columns
-			this.getModel("appView").setProperty("/layout", "TwoColumnsMidExpanded");
 
 			//get requested survey 
 			var oSurvey = oItem.getBindingContext("SurveyModel").getObject();
