@@ -234,9 +234,15 @@ sap.ui.define([
 							model: "SubmissionModel"
 						}, {});
 
-						//set enabled state of survey UI input controls and submit button
+						//set enabled state of survey UI input controls 
 						this.oViewModel.setProperty("/isEditable", oSurvey.isEditable);
-						this.oViewModel.setProperty("/isSubmitEnabled", this.isSurveyAnsweredCompletely());
+
+						//set enabled state of survey UI input controls 
+						if (oSurvey.isEditable) {
+							this.oViewModel.setProperty("/isSubmitEnabled", this.isSurveyAnsweredCompletely());
+						} else {
+							this.oViewModel.setProperty("/isSubmitEnabled", false);
+						}
 
 						//set message where survey no longer editable
 						if (!oSurvey.isEditable) {
