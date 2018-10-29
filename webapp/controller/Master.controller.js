@@ -313,7 +313,8 @@ sap.ui.define([
 				AnchorTypeID: oSurvey.AnchorTypeID,
 				TopicID: oSurvey.TopicID,
 				TopicTypeID: oSurvey.TopicTypeID,
-				ParticipantID: oSurvey.ParticipantID
+				ParticipantID: oSurvey.ParticipantID,
+				ParticipantTypeID: oSurvey.ParticipantTypeID
 			});
 
 		},

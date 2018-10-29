@@ -10,7 +10,8 @@
 	"TopicTypeID": "FunctionalConsultant",
 	"isOptional": false,
 	"isSelfSurvey": false,
-	"AnchorTypeID": "WrkReq"
+	"AnchorTypeID": "WrkReq",
+	"ParticipantTypeID": "FunctionalConsultant"
 }, {
 	"SurveyID": "2",
 	"AnchorID": "12756",
@@ -23,7 +24,8 @@
 	"TopicTypeID": "ProjectManager",
 	"isOptional": true,
 	"isSelfSurvey": false,
-	"AnchorTypeID": "WrkReq"
+	"AnchorTypeID": "WrkReq",
+	"ParticipantTypeID": "ProjectManager"
 }, {
 	"SurveyID": "3",
 	"AnchorID": "12756",
@@ -36,5 +38,6 @@
 	"TopicTypeID": "SoftwareDeveloper",
 	"isSelfSurvey": true,
 	"isOptional": false,
-	"AnchorTypeID": "WrkReq"
+	"AnchorTypeID": "WrkReq",
+	"ParticipantTypeID": "ABAPDeveloper"
 }]

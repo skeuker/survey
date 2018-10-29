@@ -128,6 +128,7 @@ sap.ui.define([
 							AnchorID: oData.AnchorID,
 							AnchorTypeID: oData.AnchorTypeID,
 							ParticipantID: oData.ParticipantID,
+							ParticipantTypeID: oData.ParticipantTypeID,
 							TopicText: oData.TopicText,
 							AnchorText: oData.AnchorText,
 							isEditable: oData.isEditable,
@@ -210,6 +211,7 @@ sap.ui.define([
 												TopicID: oSurvey.TopicID,
 												TopicTypeID: oSurvey.TopicTypeID,
 												ParticipantID: oSurvey.ParticipantID,
+												ParticipantTypeID: oSurvey.ParticipantTypeID,
 												AnswerOptionValue: null,
 												isPersisted: false
 											}];
@@ -403,6 +405,9 @@ sap.ui.define([
 			oQuestion.toAnswers.forEach(function (oAnswer) {
 				oAnswer.bGiven = true;
 			});
+
+			//force refresh of submission model bindings
+			this.getModel("SubmissionModel").refresh(true);
 
 			//set enabled state of submit button
 			this.oViewModel.setProperty("/isSubmitEnabled", this.isSurveyAnsweredCompletely());

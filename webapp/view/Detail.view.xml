@@ -24,8 +24,8 @@
 				<Panel expandable="true" expanded="true" width="auto" class="sapUiResponsiveMargin">
 					<headerToolbar>
 						<Toolbar height="3rem" style="Clear">
-							<core:Icon src="{= ${SubmissionModel>toAnswers/0/AnswerOptionValue} === null ? 'sap-icon://message-warning' : 'sap-icon://accept' }"
-								color="#346187" class="sapUiTinyMarginEnd"/>
+							<core:Icon src="{= ${SubmissionModel>toAnswers/0/bGiven} === true ? 'sap-icon://accept' : 'sap-icon://message-warning' }" color="#346187"
+								class="sapUiTinyMarginEnd"/>
 							<Title text="{= ${SubmissionModel>QuestionNumber} + '. ' + ${SubmissionModel>QuestionText} }" maxLines="1"/>
 							<ToolbarSpacer/>
 							<Button icon="sap-icon://legend" text="{i18n>textLegend}" press="onPressShowLegend"/>
