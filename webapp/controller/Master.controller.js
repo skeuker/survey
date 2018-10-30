@@ -401,17 +401,11 @@ sap.ui.define([
 				}
 			}
 
-			//Build list item description
-			sListItemDescription = oSurvey.TopicText;
-			if (oSurvey.isSelfSurvey) {
-				sListItemDescription = this.getResourceBundle().getText("textSelfAssessment");
-			}
-
 			//create standard list item with this Binding
 			return new StandardListItem({
 				type: "Navigation",
 				title: "{SurveyModel>TopicID}",
-				description: sListItemDescription,
+				description: "{SurveyModel>TopicText}",
 				info: sListItemInfo
 			});
 

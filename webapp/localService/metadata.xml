@@ -75,6 +75,7 @@
 				<Property Name="TopicID" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="TopicTypeID" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="ParticipantID" Type="Edm.String" Nullable="false"></Property>
+				<Property Name="ParticipantTypeID" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="AnswerOptionValue" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="isPersisted" Type="Edm.Boolean" Nullable="true"></Property>
 			</EntityType>

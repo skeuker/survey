@@ -212,7 +212,7 @@ sap.ui.define([
 												TopicTypeID: oSurvey.TopicTypeID,
 												ParticipantID: oSurvey.ParticipantID,
 												ParticipantTypeID: oSurvey.ParticipantTypeID,
-												AnswerOptionValue: null,
+												AnswerOptionValue: oAnswerTemplate.AnswerRangeFrom,
 												isPersisted: false
 											}];
 
@@ -235,6 +235,9 @@ sap.ui.define([
 							path: "/",
 							model: "SubmissionModel"
 						}, {});
+
+						//force refresh of UI binding
+						this.getModel("SubmissionModel").refresh(true);
 
 						//set enabled state of survey UI input controls 
 						this.oViewModel.setProperty("/isEditable", oSurvey.isEditable);
