@@ -32,6 +32,7 @@
 				</Key>
 				<Property Name="SurveyID" Type="Edm.String" Nullable="false" sap:label="Survey"></Property>
 				<Property Name="ParticipantID" Type="Edm.String" Nullable="false"></Property>
+				<Property Name="ParticipantTypeID" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="AnchorID" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="AnchorTypeID" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="TopicID" Type="Edm.String" Nullable="false"></Property>
@@ -69,6 +70,12 @@
 				<Property Name="SurveyID" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="QuestionID" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="AnswerID" Type="Edm.String" Nullable="false"></Property>
+				<Property Name="AnchorID" Type="Edm.String" Nullable="false"></Property>
+				<Property Name="AnchorTypeID" Type="Edm.String" Nullable="false"></Property>
+				<Property Name="TopicID" Type="Edm.String" Nullable="false"></Property>
+				<Property Name="TopicTypeID" Type="Edm.String" Nullable="false"></Property>
+				<Property Name="ParticipantID" Type="Edm.String" Nullable="false"></Property>
+				<Property Name="ParticipantTypeID" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="AnswerOptionValue" Type="Edm.String" Nullable="false"></Property>
 				<Property Name="isPersisted" Type="Edm.Boolean" Nullable="true"></Property>
 			</EntityType>
