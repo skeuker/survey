@@ -31,7 +31,7 @@ sap.ui.define([
 			this.getRouter().getTarget("detail").attachDisplay(this.onDisplay, this);
 
 			//keep track of OData model
-			this.oSurveyModel = this.getOwnerComponent().getModel("SurveyModel")
+			this.oSurveyModel = this.getOwnerComponent().getModel("SurveyModel");
 
 			//initiate interaction with message manager	
 			this.oMessageProcessor = new sap.ui.core.message.ControlMessageProcessor();
